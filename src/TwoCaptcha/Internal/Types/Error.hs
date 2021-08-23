@@ -1,6 +1,7 @@
 module TwoCaptcha.Internal.Types.Error where
 
 -- | Possible errors when using the 2captcha API.
+import Data.Text (Text)
 data TwoCaptchaError
   = -- | The api key you provided is invalid. Please ensure it is 32 characters long.
     WrongUserKey
@@ -105,7 +106,7 @@ data TwoCaptchaError
     -- 2captcha was unable to solve your captcha - three of their workers were unable solve it or they didn't get an answer within 90 seconds (300 seconds for reCAPTCHA V2).
     --
     -- You will not be charged for that request.
-    CaptchaNotSolvable
+    CaptchaUnsolvable
   | -- | You've provided captcha ID in wrong format. The ID can contain numbers only.
     WrongIdFormat
   | -- | You provided an invalid captcha id.
@@ -134,3 +135,43 @@ data TwoCaptchaError
     -- The proxy will be marked as BAD by our API and we will not accept requests with the proxy during 10 minutes.
     -- You will recieve ERROR_BAD_PROXY code from in.php API endpoint in such case.
     ProxyConnectionFailed
+  deriving (Show, Eq)
+
+-- | The raw error code provided by 2captcha.
+errorCode :: TwoCaptchaError -> Text
+errorCode WrongUserKey = "ERROR_WRONG_USER_KEY" 
+errorCode KeyDoesNotExist = "ERROR_KEY_DOES_NOT_EXIST"
+errorCode ZeroBalance = "ERROR_ZERO_BALANCE"
+errorCode PageUrlMissing = "ERROR_PAGEURL"
+errorCode NoSlotAvailable = "ERROR_NO_SLOT_AVAILABLE"
+errorCode ZeroCaptchaFileSize = "ERROR_ZERO_CAPTCHA_FILESIZE"
+errorCode TooBigCaptchaFileSize = "ERROR_TOO_BIG_CAPTCHA_FILESIZE"
+errorCode WrongFileExtension = "ERROR_WRONG_FILE_EXTENSION"
+errorCode ImageTypeNotSupported = "ERROR_IMAGE_TYPE_NOT_SUPPORTED"
+errorCode UploadFailure = "ERROR_UPLOAD"
+errorCode IpNotAllowed = "ERROR_IP_NOT_ALLOWED"
+errorCode IpBanned = "IP_BANNED"
+errorCode BadTokenOrPageUrl = "ERROR_BAD_TOKEN_OR_PAGEURL"
+errorCode GoogleKeyInvalid = "ERROR_GOOGLEKEY"
+errorCode GoogleKeyMissing = "ERROR_WRONG_GOOGLEKEY"
+errorCode CaptchaImageBlocked = "ERROR_CAPTCHAIMAGE_BLOCKED"
+errorCode TooManyBadImages = "TOO_MANY_BAD_IMAGES"
+errorCode RateLimited = "MAX_USER_TURN"
+errorCode Error1001 = "ERROR: 1001"
+errorCode Error1002 = "ERROR: 1002"
+errorCode Error1003 = "ERROR: 1003"
+errorCode Error1004 = "ERROR: 1004"
+errorCode Error1005 = "ERROR: 1005"
+errorCode BadParameters = "ERROR_BAD_PARAMETERS"
+errorCode BadProxy = "ERROR_BAD_PROXY"
+errorCode CaptchaNotReady = "CAPCHA_NOT_READY"
+errorCode CaptchaUnsolvable = "ERROR_CAPTCHA_UNSOLVABLE"
+errorCode WrongIdFormat = "ERROR_WRONG_ID_FORMAT"
+errorCode WrongCaptchaId = "ERROR_WRONG_CAPTCHA_ID"
+errorCode BadDuplicates = "ERROR_BAD_DUPLICATES"
+errorCode ReportNotRecorded = "ERROR_REPORT_NOT_RECORDED"
+errorCode DuplicateReport = "ERROR_DUPLICATE_REPORT"
+errorCode InvalidPingbackIp = "ERROR_IP_ADDRES"
+errorCode TokenExpired = "ERROR_TOKEN_EXPIRED"
+errorCode EmptyAction = "ERROR_EMPTY_ACTION"
+errorCode ProxyConnectionFailed = "ERROR_PROXY_CONNECTION_FAILED"

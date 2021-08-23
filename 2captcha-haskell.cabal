@@ -43,6 +43,7 @@ library
     , bytestring
     , http-client
     , mtl
+    , parsec
     , text
     , transformers
     , wreq
@@ -66,6 +67,7 @@ executable 2captcha-haskell-exe
     , bytestring
     , http-client
     , mtl
+    , parsec
     , text
     , transformers
     , wreq

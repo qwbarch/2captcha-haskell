@@ -20,6 +20,7 @@ dependencies:
 - bytestring
 - mtl
 - transformers
+- parsec
 
 default-extensions:
   - OverloadedStrings
