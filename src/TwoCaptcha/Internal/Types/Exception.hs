@@ -1,12 +1,26 @@
-module TwoCaptcha.Internal.Types.Error where
+module TwoCaptcha.Internal.Types.Exception where
 
+import Control.Exception (Exception)
 import Data.Functor (($>))
+import Network.HTTP.Client (HttpException)
 import Text.Parsec (ParseError, parse, try, (<|>))
 import Text.Parsec.Char (string)
 import Text.Parsec.String (Parser)
 
+-- | Represents a possible exception when interacting with the 2captcha API.
+data TwoCaptchaException
+  = -- | An error documented on 2captcha's website.
+    TwoCaptchaResponseException TwoCaptchaErrorCode
+  | -- | The error code is unexpected, likely due to a change in 2captcha's API.
+    UnrecognizedError String
+  | -- | A non-200 status code was thrown. This should only appear in rare cases.
+    NetworkException HttpException
+  deriving (Show)
+
+instance Exception TwoCaptchaException
+
 -- | Possible errors when using the 2captcha API.
-data TwoCaptchaError
+data TwoCaptchaErrorCode
   = -- | The api key you provided is invalid. Please ensure it is 32 characters long.
     WrongUserKey
   | -- | The key you've provided does not exist.
@@ -142,7 +156,7 @@ data TwoCaptchaError
   deriving (Show, Eq)
 
 -- | The raw error code provided by 2captcha.
-errorCode :: TwoCaptchaError -> String
+errorCode :: TwoCaptchaErrorCode -> String
 errorCode WrongUserKey = "ERROR_WRONG_USER_KEY"
 errorCode KeyDoesNotExist = "ERROR_KEY_DOES_NOT_EXIST"
 errorCode ZeroBalance = "ERROR_ZERO_BALANCE"
@@ -180,8 +194,8 @@ errorCode TokenExpired = "ERROR_TOKEN_EXPIRED"
 errorCode EmptyAction = "ERROR_EMPTY_ACTION"
 errorCode ProxyConnectionFailed = "ERROR_PROXY_CONNECTION_FAILED"
 
--- | Parser instance for parsing an error code to a 'TwoCaptchaError'.
-errorParser :: Parser TwoCaptchaError
+-- | Parser instance for parsing an error code to a 'TwoCaptchaErrorCode'.
+errorParser :: Parser TwoCaptchaErrorCode
 errorParser =
   try (string (errorCode WrongUserKey) $> WrongUserKey)
     <|> try (string (errorCode KeyDoesNotExist) $> KeyDoesNotExist)
@@ -218,8 +232,8 @@ errorParser =
     <|> try (string (errorCode InvalidPingbackIp) $> InvalidPingbackIp)
     <|> try (string (errorCode TokenExpired) $> TokenExpired $> TokenExpired $> TokenExpired $> TokenExpired)
     <|> try (string (errorCode EmptyAction) $> EmptyAction)
-    <|> try (string (errorCode ProxyConnectionFailed) $> ProxyConnectionFailed)
+    <|> string (errorCode ProxyConnectionFailed) $> ProxyConnectionFailed
 
--- | Read an error code as its corresponding 'TwoCaptchaError'.
-readErrorCode :: String -> Either ParseError TwoCaptchaError
+-- | Read an error code as its corresponding 'TwoCaptchaErrorCode'.
+readErrorCode :: String -> Either ParseError TwoCaptchaErrorCode
 readErrorCode = parse errorParser ""
