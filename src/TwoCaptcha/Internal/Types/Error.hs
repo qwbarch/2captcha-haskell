@@ -1,7 +1,11 @@
 module TwoCaptcha.Internal.Types.Error where
 
+import Data.Functor (($>))
+import Text.Parsec (ParseError, parse, try, (<|>))
+import Text.Parsec.Char (string)
+import Text.Parsec.String (Parser)
+
 -- | Possible errors when using the 2captcha API.
-import Data.Text (Text)
 data TwoCaptchaError
   = -- | The api key you provided is invalid. Please ensure it is 32 characters long.
     WrongUserKey
@@ -138,8 +142,8 @@ data TwoCaptchaError
   deriving (Show, Eq)
 
 -- | The raw error code provided by 2captcha.
-errorCode :: TwoCaptchaError -> Text
-errorCode WrongUserKey = "ERROR_WRONG_USER_KEY" 
+errorCode :: TwoCaptchaError -> String
+errorCode WrongUserKey = "ERROR_WRONG_USER_KEY"
 errorCode KeyDoesNotExist = "ERROR_KEY_DOES_NOT_EXIST"
 errorCode ZeroBalance = "ERROR_ZERO_BALANCE"
 errorCode PageUrlMissing = "ERROR_PAGEURL"
@@ -175,3 +179,47 @@ errorCode InvalidPingbackIp = "ERROR_IP_ADDRES"
 errorCode TokenExpired = "ERROR_TOKEN_EXPIRED"
 errorCode EmptyAction = "ERROR_EMPTY_ACTION"
 errorCode ProxyConnectionFailed = "ERROR_PROXY_CONNECTION_FAILED"
+
+-- | Parser instance for parsing an error code to a 'TwoCaptchaError'.
+errorParser :: Parser TwoCaptchaError
+errorParser =
+  try (string (errorCode WrongUserKey) $> WrongUserKey)
+    <|> try (string (errorCode KeyDoesNotExist) $> KeyDoesNotExist)
+    <|> try (string (errorCode ZeroBalance) $> ZeroBalance)
+    <|> try (string (errorCode PageUrlMissing) $> PageUrlMissing)
+    <|> try (string (errorCode NoSlotAvailable) $> NoSlotAvailable)
+    <|> try (string (errorCode ZeroCaptchaFileSize) $> ZeroCaptchaFileSize)
+    <|> try (string (errorCode TooBigCaptchaFileSize) $> TooBigCaptchaFileSize)
+    <|> try (string (errorCode WrongFileExtension) $> WrongFileExtension)
+    <|> try (string (errorCode ImageTypeNotSupported) $> ImageTypeNotSupported)
+    <|> try (string (errorCode UploadFailure) $> UploadFailure)
+    <|> try (string (errorCode IpNotAllowed) $> IpNotAllowed)
+    <|> try (string (errorCode IpBanned) $> IpBanned)
+    <|> try (string (errorCode BadTokenOrPageUrl) $> BadTokenOrPageUrl)
+    <|> try (string (errorCode GoogleKeyInvalid) $> GoogleKeyInvalid)
+    <|> try (string (errorCode GoogleKeyMissing) $> GoogleKeyMissing)
+    <|> try (string (errorCode CaptchaImageBlocked) $> CaptchaImageBlocked)
+    <|> try (string (errorCode TooManyBadImages) $> TooManyBadImages)
+    <|> try (string (errorCode RateLimited) $> RateLimited)
+    <|> try (string (errorCode Error1001) $> Error1001)
+    <|> try (string (errorCode Error1002) $> Error1002)
+    <|> try (string (errorCode Error1003) $> Error1003)
+    <|> try (string (errorCode Error1004) $> Error1004)
+    <|> try (string (errorCode Error1005) $> Error1005)
+    <|> try (string (errorCode BadParameters) $> BadParameters)
+    <|> try (string (errorCode BadProxy) $> BadProxy)
+    <|> try (string (errorCode CaptchaNotReady) $> CaptchaNotReady)
+    <|> try (string (errorCode CaptchaUnsolvable) $> CaptchaUnsolvable)
+    <|> try (string (errorCode WrongIdFormat) $> WrongIdFormat)
+    <|> try (string (errorCode WrongCaptchaId) $> WrongCaptchaId)
+    <|> try (string (errorCode BadDuplicates) $> BadDuplicates)
+    <|> try (string (errorCode ReportNotRecorded) $> ReportNotRecorded)
+    <|> try (string (errorCode DuplicateReport) $> DuplicateReport)
+    <|> try (string (errorCode InvalidPingbackIp) $> InvalidPingbackIp)
+    <|> try (string (errorCode TokenExpired) $> TokenExpired $> TokenExpired $> TokenExpired $> TokenExpired)
+    <|> try (string (errorCode EmptyAction) $> EmptyAction)
+    <|> try (string (errorCode ProxyConnectionFailed) $> ProxyConnectionFailed)
+
+-- | Read an error code as its corresponding 'TwoCaptchaError'.
+readErrorCode :: String -> Either ParseError TwoCaptchaError
+readErrorCode = parse errorParser ""
