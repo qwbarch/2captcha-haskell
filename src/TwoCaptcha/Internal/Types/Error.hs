@@ -1,6 +1,7 @@
 module TwoCaptcha.Internal.Types.Error where
 
-data SubmitError
+-- | Possible errors when using the 2captcha API.
+data TwoCaptchaError
   = -- | The api key you provided is invalid. Please ensure it is 32 characters long.
     WrongUserKey
   | -- | The key you've provided does not exist.
@@ -98,3 +99,38 @@ data SubmitError
     BadParameters
   | -- | You can get this error code when sending a captcha via proxy server which is marked as BAD by the 2captcha API.
     BadProxy
+  | -- | Your captcha is not solved yet.
+    CaptchaNotReady
+  | -- |
+    -- 2captcha was unable to solve your captcha - three of their workers were unable solve it or they didn't get an answer within 90 seconds (300 seconds for reCAPTCHA V2).
+    --
+    -- You will not be charged for that request.
+    CaptchaNotSolvable
+  | -- | You've provided captcha ID in wrong format. The ID can contain numbers only.
+    WrongIdFormat
+  | -- | You provided an invalid captcha id.
+    WrongCaptchaId
+  | -- | Error is returned when 100% accuracy feature is enabled. The error means that max numbers of tries is reached but min number of matches not found.
+    BadDuplicates
+  | -- |
+    -- Error is returned to your <https://2captcha.com/2captcha-api#complain report> request if you already complained lots of correctly solved captchas (more than 40%).
+    -- Or if more than 15 minutes passed after you submitted the captcha.
+    ReportNotRecorded
+  | -- | Error is returned to your <https://2captcha.com/2captcha-api#complain report request> if you are trying to report the same captcha more than once.
+    DuplicateReport
+  | -- |
+    -- You can receive this error code when registering a <https://2captcha.com/2captcha-api#pingback pingback (callback)> IP or domain.
+    --
+    -- This happens if your request is coming from an IP address that doesn't match the IP address of your pingback IP or domain.
+    InvalidPingbackIp
+  | -- |
+    -- You can receive this error code when sending <https://2captcha.com/2captcha-api#solving_geetest GeeTest>.
+    -- This error means the __challenge__ value you provided is expired.
+    TokenExpired
+  | -- | Action parameter is missing or no value is provided for __action__ parameter.
+    EmptyAction
+  | -- |
+    -- You can get this error code if we were unable to load a captcha through your proxy server.
+    -- The proxy will be marked as BAD by our API and we will not accept requests with the proxy during 10 minutes.
+    -- You will recieve ERROR_BAD_PROXY code from in.php API endpoint in such case.
+    ProxyConnectionFailed

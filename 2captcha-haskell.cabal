@@ -26,7 +26,7 @@ source-repository head
 library
   exposed-modules:
       TwoCaptcha.Client
-      TwoCaptcha.Internal.Types.Exception
+      TwoCaptcha.Internal.Types.Error
       TwoCaptcha.Internal.Types.ReCaptcha
       TwoCaptcha.Types
   other-modules:
