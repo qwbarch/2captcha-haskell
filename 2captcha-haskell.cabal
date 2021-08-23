@@ -7,12 +7,12 @@ cabal-version: 1.12
 name:           2captcha-haskell
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/2captcha-haskell#readme>
-homepage:       https://github.com/githubuser/2captcha-haskell#readme
-bug-reports:    https://github.com/githubuser/2captcha-haskell/issues
-author:         Author name here
-maintainer:     example@example.com
-copyright:      2021 Author name here
-license:        BSD3
+homepage:       https://github.com/qwbarch/2captcha-haskell#readme
+bug-reports:    https://github.com/qwbarch/2captcha-haskell/issues
+author:         Edward Yang
+maintainer:     edwardyang0410@gmail.com
+copyright:      2021 Edward Yang
+license:        MIT
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
@@ -21,17 +21,31 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/2captcha-haskell
+  location: https://github.com/qwbarch/2captcha-haskell
 
 library
   exposed-modules:
-      Lib
+      TwoCaptcha.Client
+      TwoCaptcha.Internal.Types.Exception
+      TwoCaptcha.Internal.Types.ReCaptcha
+      TwoCaptcha.Types
   other-modules:
       Paths_2captcha_haskell
   hs-source-dirs:
       src
+  default-extensions:
+      OverloadedStrings
+      FlexibleContexts
+      FlexibleInstances
+      UndecidableInstances
   build-depends:
       base >=4.7 && <5
+    , bytestring
+    , http-client
+    , mtl
+    , text
+    , transformers
+    , wreq
   default-language: Haskell2010
 
 executable 2captcha-haskell-exe
@@ -40,21 +54,19 @@ executable 2captcha-haskell-exe
       Paths_2captcha_haskell
   hs-source-dirs:
       app
+  default-extensions:
+      OverloadedStrings
+      FlexibleContexts
+      FlexibleInstances
+      UndecidableInstances
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       2captcha-haskell
     , base >=4.7 && <5
-  default-language: Haskell2010
-
-test-suite 2captcha-haskell-test
-  type: exitcode-stdio-1.0
-  main-is: Spec.hs
-  other-modules:
-      Paths_2captcha_haskell
-  hs-source-dirs:
-      test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      2captcha-haskell
-    , base >=4.7 && <5
+    , bytestring
+    , http-client
+    , mtl
+    , text
+    , transformers
+    , wreq
   default-language: Haskell2010
