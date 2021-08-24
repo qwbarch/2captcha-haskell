@@ -16,6 +16,7 @@ data ProxyAuth = ProxyAuth
 data Proxy = Proxy
   { address :: Text,
     port :: Int,
-    authentication :: Maybe ProxyAuth
+    auth :: Maybe ProxyAuth,
+    proxyType :: ProxyType
   }
   deriving (Show)

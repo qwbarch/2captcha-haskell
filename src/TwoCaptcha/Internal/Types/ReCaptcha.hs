@@ -6,6 +6,11 @@ import TwoCaptcha.Internal.Types.Proxy (Proxy)
 -- | The possible domains of a reCAPTCHA.
 data ReCaptchaDomain = GoogleDomain | ReCaptchaDomain deriving (Show)
 
+-- | The recaptcha domain as a URL.
+domainUrl :: ReCaptchaDomain -> Text
+domainUrl GoogleDomain = "google.com"
+domainUrl ReCaptchaDomain = "recaptcha.net"
+
 -- | Required parameters to solve a reCAPTCHA via the 2captcha API.
 data ReCaptcha = ReCaptcha
   { -- | Your 2captcha API <https://2captcha.com/2captcha-api#solving_captchas key>.
@@ -33,10 +38,10 @@ data ReCaptcha = ReCaptcha
     -- |
     -- URL for pingback (callback) response that will be sent when captcha is solved.
     -- URL should be registered on the server. Click <https://2captcha.com/2captcha-api#pingback here> for more info.
-    pingback :: Text,
+    pingback :: Maybe Text,
     -- | Id of software developer. Developers who integrated their software with 2captcha get 10% of spendings of their users.
-    softId :: Int,
+    softId :: Maybe Int,
     -- | Proxy to send to the worker who solves the captcha.
-    proxy :: Proxy
+    proxy :: Maybe Proxy
   }
   deriving (Show)
