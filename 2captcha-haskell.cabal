@@ -27,6 +27,8 @@ library
   exposed-modules:
       TwoCaptcha.Internal.Client
       TwoCaptcha.Internal.Types.Exception
+      TwoCaptcha.Internal.Types.Proxy
+      TwoCaptcha.Internal.Types.ReCaptcha
   other-modules:
       Paths_2captcha_haskell
   hs-source-dirs:
