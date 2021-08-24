@@ -1,18 +1,13 @@
 module TwoCaptcha.Internal.Client where
 
-import Control.Exception (throw)
-import Control.Lens ((&), (.~), (^.), (^?))
-import Control.Monad.Catch (Handler (Handler), MonadCatch, MonadThrow (throwM), catches, try)
+import Control.Lens ((^?))
+import Control.Monad.Catch (MonadCatch, MonadThrow (throwM))
 import Control.Monad.IO.Class (MonadIO (liftIO))
-import Control.Monad.Reader.Class (MonadReader (ask))
-import Data.Aeson (Value (Null))
-import Data.Aeson.Lens (key, _Integer, _Integral, _String)
+import Data.Aeson.Lens (key, _Integer, _String)
 import Data.ByteString.Lazy.Char8 (ByteString)
 import Data.Text (Text, unpack)
-import Network.HTTP.Client (HttpException)
-import Network.Wreq (JSONError, Options, Response, asJSON, asValue, defaults, param, responseBody)
-import Network.Wreq.Session (Session, postWith)
-import TwoCaptcha.Internal.Types.Exception (TwoCaptchaException (NetworkException, TwoCaptchaResponseException, UnknownError), readErrorCode)
+import Network.Wreq (Options, Response, responseBody)
+import TwoCaptcha.Internal.Types.Exception (TwoCaptchaException (TwoCaptchaResponseException, UnknownError), readErrorCode)
 
 request :: (MonadIO m, MonadCatch m) => IO (Response ByteString) -> Options -> m Text
 request method options = do
