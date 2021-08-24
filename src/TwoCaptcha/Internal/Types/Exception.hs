@@ -2,6 +2,7 @@ module TwoCaptcha.Internal.Types.Exception where
 
 import Control.Exception (Exception)
 import Data.Functor (($>))
+import Data.Text (Text)
 import Network.HTTP.Client (HttpException)
 import Text.Parsec (ParseError, parse, try, (<|>))
 import Text.Parsec.Char (string)
@@ -11,10 +12,10 @@ import Text.Parsec.String (Parser)
 data TwoCaptchaException
   = -- | An error documented on 2captcha's website.
     TwoCaptchaResponseException TwoCaptchaErrorCode
-  | -- | The error code is unexpected, likely due to a change in 2captcha's API.
-    UnrecognizedError String
   | -- | A non-200 status code was thrown. This should only appear in rare cases.
     NetworkException HttpException
+  | -- | An unknown error occured, likely due to a change in the 2captcha API.
+    UnknownError Text
   deriving (Show)
 
 instance Exception TwoCaptchaException

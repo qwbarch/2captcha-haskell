@@ -21,6 +21,10 @@ dependencies:
 - mtl
 - transformers
 - parsec
+- aeson
+- lens
+- lens-aeson
+- exceptions
 
 default-extensions:
   - OverloadedStrings
