@@ -35,8 +35,8 @@ class Coercible Options a => ReCaptchaLike a where
   -- |
   -- If 'True', __in.php__ will include the __Access-Control-Allow-Origin:*__ header in the response.
   -- Used for cross-domain AJAX requests in web applications.
-  headerACAO :: Lens' a (Maybe Int)
-  headerACAO = mkLens' "header_acao"
+  headerACAO :: Lens' a (Maybe Bool)
+  headerACAO = mkLensBool "header_acao"
 
 -- | Parameters used to solve reCAPTCHA V2.
 newtype ReCaptchaV2 = MkReCaptchaV2 Options deriving (Show)
@@ -95,6 +95,28 @@ newtype ReCaptchaV3 = MkReCaptchaV3 Options deriving (Show)
 instance CaptchaLike ReCaptchaV3
 
 instance ReCaptchaLike ReCaptchaV3
+
+-- |
+-- Parameters for solving a reCAPTCHA V3.
+--
+-- Required parameters:
+--
+-- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
+-- * 'googleKey'
+-- * 'pageUrl'
+--
+-- Optional parameters:
+--
+-- * 'enterprise'
+-- * 'domain'
+-- * 'minScore'
+-- * 'headerACAO'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
+-- * 'TwoCaptcha.Internal.Types.Captcha.softId'
+-- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
+-- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'
+reCAPTCHAV3 :: ReCaptchaV3
+reCAPTCHAV3 = MkReCaptchaV3 $ defaultReCaptcha & param "version" .~ ["v3"]
 
 -- | The score needed for resolution. Currently it's almost impossible to get a token with a score higher than 0.3
 minScore :: Lens' ReCaptchaV3 (Maybe Double)
