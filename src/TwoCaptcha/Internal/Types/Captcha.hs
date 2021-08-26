@@ -1,6 +1,6 @@
 module TwoCaptcha.Internal.Types.Captcha where
 
-import Control.Lens (Lens', iso, lens, (&), (.~), (^.))
+import Control.Lens (Iso', Lens', iso, lens, (&), (.~), (^.))
 import Data.Text (Text, pack, unpack)
 import GHC.Base (Coercible, coerce)
 import Network.Wreq (Options, param)
@@ -18,17 +18,19 @@ lens' field = lens getter setter
     setter a (Just value) = coerce $ coerce a & param field .~ [value]
     setter a Nothing = a
 
--- | Represents the request options to solve a captcha using the in.php route.
-newtype Captcha = MkCaptcha Options deriving (Show)
+-- | Create a lens using the given field name for type __b__ with a 'Show' and 'Read' instance.
+lens'' :: (Coercible Options a, Show b, Read b) => Text -> Lens' a (Maybe b)
+lens'' field = lens' field . iso (read . unpack <$>) (pack . show <$>)
 
-class Coercible Captcha a => CaptchaLike a where
+-- | Lenses for constructing captcha options.
+class Coercible Options a => CaptchaLike a where
   -- | Your 2captcha API <https://2captcha.com/2captcha-api#solving_captchas key>.
   apiKey :: Lens' a (Maybe Text)
   apiKey = lens' "key"
 
   -- | Software developer id. Developers who integrate their software with 2captcha earn 10% of the user's spendings.
   softId :: Lens' a (Maybe Int)
-  softId = lens' "soft_id" . iso (read . unpack <$>) (pack . show <$>)
+  softId = lens'' "soft_id"
 
   -- | URL for <https://2captcha.com/2captcha-api#pingback pingback> (callback) response that will be sent the answer to when the captcha is solved.
   pingback :: Lens' a (Maybe Text)
@@ -41,8 +43,6 @@ class Coercible Captcha a => CaptchaLike a where
   proxy :: Lens' a (Maybe Text)
   proxy = lens' "proxy"
 
-  -- | Type of your proxy: HTTP, HTTPS, SOCKS4, SOCKS5.
+  -- | Type of your proxy: __HTTP__, __HTTPS__, __SOCKS4__, __SOCKS5__.
   proxyType :: Lens' a (Maybe Text)
   proxyType = lens' "proxytype"
-
-instance CaptchaLike Captcha
