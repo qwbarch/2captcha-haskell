@@ -1,10 +1,15 @@
 module TwoCaptcha.Internal.Types.ReCaptcha where
 
-import Control.Lens (Lens', iso)
+import Control.Lens (Lens', iso, (&), (.~))
 import Data.Text (Text, pack, unpack)
 import GHC.Base (Coercible)
 import Network.Wreq (Options)
-import TwoCaptcha.Internal.Types.Captcha (CaptchaLike, lens', lens'')
+import Network.Wreq.Lens (param)
+import TwoCaptcha.Internal.Types.Captcha (CaptchaLike, defaultCaptcha, lens', lens'')
+
+-- | Default options for a reCAPTCHA.
+defaultReCaptcha :: Options
+defaultReCaptcha = defaultCaptcha & param "method" .~ ["userrecaptcha"]
 
 -- | Lenses for constructing ReCaptcha options.
 class Coercible Options a => ReCaptchaLike a where
@@ -39,6 +44,31 @@ newtype ReCaptchaV2 = MkReCaptchaV2 Options deriving (Show)
 instance CaptchaLike ReCaptchaV2
 
 instance ReCaptchaLike ReCaptchaV2
+
+-- |
+-- Parameters for solving a reCAPTCHA V2.
+--
+-- Required parameters:
+--
+-- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
+-- * 'googleKey'
+-- * 'pageUrl'
+--
+-- Optional parameters:
+--
+-- * 'enterprise'
+-- * 'domain'
+-- * 'invisible'
+-- * 'dataS'
+-- * 'cookies'
+-- * 'userAgent'
+-- * 'headerACAO'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
+-- * 'TwoCaptcha.Internal.Types.Captcha.softId'
+-- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
+-- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'
+reCAPTCHAV2 :: ReCaptchaV2
+reCAPTCHAV2 = MkReCaptchaV2 $ defaultReCaptcha
 
 -- | Defines if the reCAPTCHA v2 is invisible.
 invisible :: Lens' ReCaptchaV2 (Maybe Bool)

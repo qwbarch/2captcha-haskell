@@ -3,7 +3,11 @@ module TwoCaptcha.Internal.Types.Captcha where
 import Control.Lens (Lens', iso, lens, (&), (.~), (^.))
 import Data.Text (Text, pack, unpack)
 import GHC.Base (Coercible, coerce)
-import Network.Wreq (Options, param)
+import Network.Wreq (Options, defaults, param)
+
+-- | Defaults options for a captcha.
+defaultCaptcha :: Options
+defaultCaptcha = defaults & param "json" .~ ["1"]
 
 -- | Creates a lens using the given field name.
 lens' :: Coercible Options a => Text -> Lens' a (Maybe Text)
