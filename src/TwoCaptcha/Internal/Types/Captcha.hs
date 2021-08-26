@@ -1,6 +1,6 @@
 module TwoCaptcha.Internal.Types.Captcha where
 
-import Control.Lens (Iso', Lens', iso, lens, (&), (.~), (^.))
+import Control.Lens (Lens', iso, lens, (&), (.~), (^.))
 import Data.Text (Text, pack, unpack)
 import GHC.Base (Coercible, coerce)
 import Network.Wreq (Options, param)

@@ -32,6 +32,8 @@ default-extensions:
   - FlexibleInstances
   - UndecidableInstances
   - RankNTypes
+  - ScopedTypeVariables
+  - LambdaCase
 
 library:
   source-dirs: src
