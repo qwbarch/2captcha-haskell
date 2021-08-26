@@ -25,10 +25,8 @@ source-repository head
 
 library
   exposed-modules:
-      TwoCaptcha.Internal.Client
+      TwoCaptcha.Internal.Types.Captcha
       TwoCaptcha.Internal.Types.Exception
-      TwoCaptcha.Internal.Types.Proxy
-      TwoCaptcha.Internal.Types.ReCaptcha
   other-modules:
       Paths_2captcha_haskell
   hs-source-dirs:
@@ -38,6 +36,7 @@ library
       FlexibleContexts
       FlexibleInstances
       UndecidableInstances
+      RankNTypes
   ghc-options: -Wall -Wno-name-shadowing
   build-depends:
       aeson
@@ -65,6 +64,7 @@ executable 2captcha-haskell-exe
       FlexibleContexts
       FlexibleInstances
       UndecidableInstances
+      RankNTypes
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       2captcha-haskell

@@ -31,6 +31,7 @@ default-extensions:
   - FlexibleContexts
   - FlexibleInstances
   - UndecidableInstances
+  - RankNTypes
 
 library:
   source-dirs: src
