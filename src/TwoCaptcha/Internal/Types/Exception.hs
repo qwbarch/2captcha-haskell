@@ -16,6 +16,8 @@ data TwoCaptchaException
     NetworkException HttpException
   | -- | An unknown error occured, likely due to a change in the 2captcha API.
     UnknownError Text
+  | -- | Solving the captcha took too long. Try setting a higher timeout duration?
+    SolvingTimeout
   deriving (Show)
 
 instance Exception TwoCaptchaException

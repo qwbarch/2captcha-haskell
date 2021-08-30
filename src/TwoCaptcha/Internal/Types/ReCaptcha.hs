@@ -1,18 +1,18 @@
 module TwoCaptcha.Internal.Types.ReCaptcha where
 
-import Control.Lens (Lens', iso, (&), (.~))
-import Data.Text (Text, pack, unpack)
+import Control.Lens (Lens', (&), (.~))
+import Data.Text (Text)
 import GHC.Base (Coercible)
 import Network.Wreq (Options)
 import Network.Wreq.Lens (param)
-import TwoCaptcha.Internal.Types.Captcha (CaptchaLike, defaultCaptcha, mkLens, mkLens', mkLensBool)
+import TwoCaptcha.Internal.Types.Captcha (HasCaptchaLenses, HasCommonCaptchaLenses, defaultCaptchaOptions, mkLens, mkLens', mkLensBool)
 
 -- | Default options for a reCAPTCHA.
-defaultReCaptcha :: Options
-defaultReCaptcha = defaultCaptcha & param "method" .~ ["userrecaptcha"]
+defaultReCaptchaOptions :: Options
+defaultReCaptchaOptions = defaultCaptchaOptions & param "method" .~ ["userrecaptcha"]
 
 -- | Lenses for constructing ReCaptcha options.
-class Coercible Options a => ReCaptchaLike a where
+class Coercible Options a => HasReCaptchaLenses a where
   -- | Defines if your ReCaptcha is enterprise.
   enterprise :: Lens' a (Maybe Bool)
   enterprise = mkLensBool "enterprise"
@@ -32,18 +32,14 @@ class Coercible Options a => ReCaptchaLike a where
   domain :: Lens' a (Maybe Text)
   domain = mkLens "domain"
 
-  -- |
-  -- If 'True', __in.php__ will include the __Access-Control-Allow-Origin:*__ header in the response.
-  -- Used for cross-domain AJAX requests in web applications.
-  headerACAO :: Lens' a (Maybe Bool)
-  headerACAO = mkLensBool "header_acao"
-
 -- | Parameters used to solve reCAPTCHA V2.
-newtype ReCaptchaV2 = MkReCaptchaV2 Options deriving (Show)
+newtype ReCaptchaV2 = ReCaptchaV2 Options deriving (Show)
 
-instance CaptchaLike ReCaptchaV2
+instance HasCommonCaptchaLenses ReCaptchaV2
 
-instance ReCaptchaLike ReCaptchaV2
+instance HasCaptchaLenses ReCaptchaV2
+
+instance HasReCaptchaLenses ReCaptchaV2
 
 -- |
 -- Parameters for solving a reCAPTCHA V2.
@@ -62,13 +58,13 @@ instance ReCaptchaLike ReCaptchaV2
 -- * 'dataS'
 -- * 'cookies'
 -- * 'userAgent'
--- * 'headerACAO'
+-- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'
 reCAPTCHAV2 :: ReCaptchaV2
-reCAPTCHAV2 = MkReCaptchaV2 defaultReCaptcha
+reCAPTCHAV2 = ReCaptchaV2 defaultReCaptchaOptions
 
 -- | Defines if the reCAPTCHA v2 is invisible.
 invisible :: Lens' ReCaptchaV2 (Maybe Bool)
@@ -90,11 +86,13 @@ userAgent :: Lens' ReCaptchaV2 (Maybe Text)
 userAgent = mkLens "userAgent"
 
 -- | Parameters used to solve reCAPTCHA V3.
-newtype ReCaptchaV3 = MkReCaptchaV3 Options deriving (Show)
+newtype ReCaptchaV3 = ReCaptchaV3 Options deriving (Show)
 
-instance CaptchaLike ReCaptchaV3
+instance HasCommonCaptchaLenses ReCaptchaV3
 
-instance ReCaptchaLike ReCaptchaV3
+instance HasCaptchaLenses ReCaptchaV3
+
+instance HasReCaptchaLenses ReCaptchaV3
 
 -- |
 -- Parameters for solving a reCAPTCHA V3.
@@ -110,13 +108,13 @@ instance ReCaptchaLike ReCaptchaV3
 -- * 'enterprise'
 -- * 'domain'
 -- * 'minScore'
--- * 'headerACAO'
+-- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'
 reCAPTCHAV3 :: ReCaptchaV3
-reCAPTCHAV3 = MkReCaptchaV3 $ defaultReCaptcha & param "version" .~ ["v3"]
+reCAPTCHAV3 = ReCaptchaV3 $ defaultReCaptchaOptions & param "version" .~ ["v3"]
 
 -- | The score needed for resolution. Currently it's almost impossible to get a token with a score higher than 0.3
 minScore :: Lens' ReCaptchaV3 (Maybe Double)

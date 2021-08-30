@@ -25,6 +25,7 @@ dependencies:
 - lens
 - lens-aeson
 - exceptions
+- clock
 
 default-extensions:
   - OverloadedStrings
@@ -34,6 +35,7 @@ default-extensions:
   - RankNTypes
   - ScopedTypeVariables
   - LambdaCase
+  - MultiParamTypeClasses
 
 library:
   source-dirs: src

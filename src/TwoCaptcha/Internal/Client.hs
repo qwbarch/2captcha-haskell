@@ -1,6 +1,7 @@
 module TwoCaptcha.Internal.Client where
 
-import Control.Lens ((^?))
+import Control.Concurrent (threadDelay)
+import Control.Lens ((&), (.~), (?~), (^.), (^?))
 import Control.Monad.Catch (MonadCatch, MonadThrow (throwM), try)
 import Control.Monad.IO.Class (MonadIO (liftIO))
 import Control.Monad.Reader.Class (MonadReader (ask))
@@ -9,13 +10,15 @@ import Data.Aeson.Lens (key, _Integer, _String)
 import Data.ByteString.Lazy.Char8 (ByteString)
 import Data.Text (Text, unpack)
 import GHC.Base (Coercible, coerce)
-import Network.Wreq (Options, Response, responseBody)
+import Network.Wreq (Options, Response, param, responseBody)
 import Network.Wreq.Session (Session, getWith, postWith)
-import TwoCaptcha.Internal.Types.Exception (TwoCaptchaException (NetworkException, TwoCaptchaResponseException, UnknownError), readErrorCode)
+import System.Clock (Clock (Monotonic), getTime, toNanoSecs)
+import TwoCaptcha.Internal.Types.Captcha (CaptchaId, CaptchaRes (CaptchaRes), HasCaptchaLenses, HasCommonCaptchaLenses (apiKey, headerACAO), PollingInterval, TimeoutDuration, captchaId, defaultCaptchaRes)
+import TwoCaptcha.Internal.Types.Exception (TwoCaptchaErrorCode (CaptchaNotReady), TwoCaptchaException (NetworkException, SolvingTimeout, TwoCaptchaResponseException, UnknownError), readErrorCode)
 
 -- | Runs the given http method and adapts errors to 'TwoCaptchaException'.
 handle :: (MonadIO m, MonadCatch m) => IO (Response ByteString) -> m Text
-handle method = do
+handle method =
   try (liftIO method) >>= \case
     -- HttpException found due to non-200 status code. Rethrow as NetworkException.
     Left exception -> throwM $ NetworkException exception
@@ -27,7 +30,9 @@ handle method = do
             return (status, request)
       case statusRequest of
         -- 'status' and 'request' fields are missing.
-        Nothing -> throwM $ UnknownError "The response is not the expected JSON. This is likely due to 2captcha changing their API."
+        Nothing -> do
+          liftIO $ print response
+          throwM $ UnknownError "The response is not the expected JSON. This is likely due to 2captcha changing their API."
         Just (status, request) -> do
           -- 'status' 0 means an error was returned.
           if status == 0
@@ -42,11 +47,42 @@ handle method = do
 -- | Encapsulates the __in.php__ and __res.php__ endpoints for the 2captcha API.
 class TwoCaptchaClient m where
   -- | Submit a captcha to be solved by the 2captcha API. Returns a captcha id used for 'answer'.
-  submit :: Coercible Options a => a -> m Text
+  submit :: (Coercible Options a, HasCaptchaLenses a, HasCommonCaptchaLenses a) => a -> m CaptchaId
 
-  -- | Attempt to retrieve the answer of a captcha previously submitted. Returns the answer to the captcha.
-  answer :: Coercible Options a => a -> m Text
+  -- | Attempt to retrieve the answer of a captcha previously submitted.
+  answer :: CaptchaRes -> m Text
+
+  -- | Submits a captcha and polls for the answer.
+  solve :: (Coercible Options a, HasCaptchaLenses a, HasCommonCaptchaLenses a) => a -> PollingInterval -> TimeoutDuration -> m Text
 
 instance (MonadReader Session m, MonadIO m, MonadCatch m) => TwoCaptchaClient m where
   submit captcha = ask >>= \session -> handle $ postWith (coerce captcha) session "https://2captcha.com/in.php" Null
-  answer captcha = ask >>= \session -> handle $ getWith (coerce captcha) session "https://2captcha.com/res.php"
+  answer captchaRes = do
+    let options = coerce captchaRes & param "action" .~ ["get"] & param "json" .~ ["1"]
+    session <- ask
+    handle $ getWith options session "https://2captcha.com/res.php"
+  solve captcha pollingInterval timeoutDuration = do
+    captchaId' <- submit captcha
+    let captchaRes =
+          defaultCaptchaRes
+            & apiKey .~ (captcha ^. apiKey)
+            & headerACAO .~ (captcha ^. headerACAO)
+            & captchaId ?~ captchaId'
+    let time = liftIO $ (\t -> toNanoSecs t `div` 1000000) <$> getTime Monotonic
+    startTime <- time
+    let pollAnswer previousTime currentTime =
+          -- Elapsed time is past the timeout duration
+          if currentTime - previousTime >= timeoutDuration
+            then throwM SolvingTimeout
+            else do
+              -- Attempt to retrieve the answer. If it's not ready yet, retry.
+              answerAttempt <- try $ answer captchaRes
+              liftIO $ print answerAttempt
+              case answerAttempt of
+                Left (TwoCaptchaResponseException CaptchaNotReady) -> do
+                  liftIO $ threadDelay (pollingInterval * 1000)
+                  updatedTime <- time
+                  pollAnswer currentTime updatedTime
+                Left exception -> throwM exception
+                Right answer -> pure answer
+    pollAnswer startTime startTime
