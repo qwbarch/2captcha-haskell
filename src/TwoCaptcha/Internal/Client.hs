@@ -4,15 +4,14 @@ import Control.Concurrent (threadDelay)
 import Control.Lens ((&), (.~), (?~), (^.), (^?))
 import Control.Monad.Catch (MonadCatch, MonadThrow (throwM), try)
 import Control.Monad.IO.Class (MonadIO (liftIO))
-import Data.Aeson (Value (Null))
 import Data.Aeson.Lens (key, _Integer, _String)
 import Data.ByteString.Lazy.Char8 (ByteString)
 import Data.Text (Text, unpack)
 import GHC.Base (Coercible, coerce)
-import Network.Wreq (Response, param, responseBody)
+import Network.Wreq (Response, responseBody)
 import Network.Wreq.Session (Session, getWith, postWith)
 import System.Clock (Clock (Monotonic), getTime, toNanoSecs)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, CaptchaId, CaptchaRes (CaptchaRes), HasCaptchaLenses, HasCommonCaptchaLenses (apiKey, headerACAO), PollingInterval, TimeoutDuration, captchaId, captchaRes, options)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, CaptchaId, CaptchaRes (CaptchaRes), HasCaptchaLenses, HasCommonCaptchaLenses (apiKey, headerACAO), PollingInterval, TimeoutDuration, captchaId, captchaRes, options, parts)
 import TwoCaptcha.Internal.Types.Exception (TwoCaptchaErrorCode (CaptchaNotReady), TwoCaptchaException (NetworkException, SolvingTimeout, TwoCaptchaResponseException, UnknownError), readErrorCode)
 
 -- | Runs the given http method and adapts errors to 'TwoCaptchaException'.
@@ -55,7 +54,9 @@ class TwoCaptchaClient m where
   solve :: (Coercible Captcha a, HasCaptchaLenses a, HasCommonCaptchaLenses a) => Session -> a -> PollingInterval -> TimeoutDuration -> m Text
 
 instance (MonadIO m, MonadCatch m) => TwoCaptchaClient m where
-  submit session captcha = handle $ postWith (coerce captcha ^. options) session "https://2captcha.com/in.php" Null
+  submit session captcha' = handle $ postWith (captcha ^. options) session "https://2captcha.com/in.php" (captcha ^. parts)
+    where
+      captcha = coerce captcha'
   answer session (CaptchaRes captchaRes) = handle $ getWith (captchaRes ^. options) session "https://2captcha.com/res.php"
   solve session captcha pollingInterval timeoutDuration = do
     captchaId' <- submit session captcha
