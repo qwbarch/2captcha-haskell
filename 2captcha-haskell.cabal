@@ -52,10 +52,8 @@ library
     , http-client
     , lens
     , lens-aeson
-    , mtl
     , parsec
     , text
-    , transformers
     , wreq
   default-language: Haskell2010
 
@@ -85,9 +83,7 @@ executable 2captcha-haskell-exe
     , http-client
     , lens
     , lens-aeson
-    , mtl
     , parsec
     , text
-    , transformers
     , wreq
   default-language: Haskell2010

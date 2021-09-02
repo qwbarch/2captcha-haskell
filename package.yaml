@@ -18,8 +18,6 @@ dependencies:
 - wreq
 - text
 - bytestring
-- mtl
-- transformers
 - parsec
 - aeson
 - lens
