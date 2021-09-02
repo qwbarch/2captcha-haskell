@@ -1,39 +1,38 @@
 module TwoCaptcha.Internal.Types.ReCaptcha where
 
-import Control.Lens (Lens', (&), (.~))
+import Control.Lens (Lens', (%~), (&), (.~))
 import Data.Text (Text)
 import GHC.Base (Coercible)
-import Network.Wreq (Options)
 import Network.Wreq.Lens (param)
-import TwoCaptcha.Internal.Types.Captcha (HasCaptchaLenses, HasCommonCaptchaLenses, TimeoutDuration, defaultCaptchaOptions, mkLens, mkLens', mkLensBool)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
 
--- | Default options for a reCAPTCHA.
-defaultReCaptchaOptions :: Options
-defaultReCaptchaOptions = defaultCaptchaOptions & param "method" .~ ["userrecaptcha"]
+-- | Default parameters for solving a recaptcha. Internal use only.
+defaultReCAPTCHA :: Captcha
+defaultReCAPTCHA = defaultCaptcha & options %~ (& param "method" .~ ["userrecaptcha"])
 
 -- | Lenses for constructing ReCaptcha options.
-class Coercible Options a => HasReCaptchaLenses a where
+class Coercible Captcha a => HasReCaptchaLenses a where
   -- | Defines if your ReCaptcha is enterprise.
   enterprise :: Lens' a (Maybe Bool)
-  enterprise = mkLensBool "enterprise"
+  enterprise = mkParamLensBool "enterprise"
 
   -- |
   -- If using 'ReCaptchaV2', this is the value of __k__ or __data-sitekey__ found on the captcha page.
   --
   -- If using 'ReCaptchaV3', this is the value of __sitekey__ found on the captcha page.
   googleKey :: Lens' a (Maybe Text)
-  googleKey = mkLens "googlekey"
+  googleKey = mkParamLens "googlekey"
 
   -- | Full URL of the page where the reCAPTCHA is found.
   pageUrl :: Lens' a (Maybe Text)
-  pageUrl = mkLens "pageurl"
+  pageUrl = mkParamLens "pageurl"
 
   -- | Domain used to load the captcha: __google.com__ or __recaptcha.net__.
   domain :: Lens' a (Maybe Text)
-  domain = mkLens "domain"
+  domain = mkParamLens "domain"
 
 -- | Parameters used to solve reCAPTCHA V2.
-newtype ReCaptchaV2 = ReCaptchaV2 Options deriving (Show)
+newtype ReCaptchaV2 = MkReCaptchaV2 Captcha deriving (Show)
 
 instance HasCommonCaptchaLenses ReCaptchaV2
 
@@ -64,29 +63,29 @@ instance HasReCaptchaLenses ReCaptchaV2
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'
 reCAPTCHAV2 :: ReCaptchaV2
-reCAPTCHAV2 = ReCaptchaV2 defaultReCaptchaOptions
+reCAPTCHAV2 = MkReCaptchaV2 defaultReCAPTCHA
 
 -- | Defines if the reCAPTCHA v2 is invisible.
 invisible :: Lens' ReCaptchaV2 (Maybe Bool)
-invisible = mkLensBool "invisible"
+invisible = mkParamLensBool "invisible"
 
 -- | Value of the __data-s__ parameter found on the reCAPTCHA page. Currently applicable for google services.
 dataS :: Lens' ReCaptchaV2 (Maybe Text)
-dataS = mkLens "data-s"
+dataS = mkParamLens "data-s"
 
 -- |
 -- Cookies that will be used by the worker solving the reCAPTCHA. The used cookies will also be included in the response.
 --
 -- Format: __KEY1:Value1;KEY2:Value2;__
 cookies :: Lens' ReCaptchaV2 (Maybe Text)
-cookies = mkLens "cookies"
+cookies = mkParamLens "cookies"
 
 -- | User agent that will be used by the worker solving the reCAPTCHA.
 userAgent :: Lens' ReCaptchaV2 (Maybe Text)
-userAgent = mkLens "userAgent"
+userAgent = mkParamLens "userAgent"
 
 -- | Parameters used to solve reCAPTCHA V3.
-newtype ReCaptchaV3 = ReCaptchaV3 Options deriving (Show)
+newtype ReCaptchaV3 = MkReCaptchaV3 Captcha deriving (Show)
 
 instance HasCommonCaptchaLenses ReCaptchaV3
 
@@ -114,11 +113,11 @@ instance HasReCaptchaLenses ReCaptchaV3
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'
 reCAPTCHAV3 :: ReCaptchaV3
-reCAPTCHAV3 = ReCaptchaV3 $ defaultReCaptchaOptions & param "version" .~ ["v3"]
+reCAPTCHAV3 = MkReCaptchaV3 (defaultReCAPTCHA & options %~ (& param "version" .~ ["v3"]))
 
 -- | The score needed for resolution. Currently it's almost impossible to get a token with a score higher than 0.3
 minScore :: Lens' ReCaptchaV3 (Maybe Double)
-minScore = mkLens' "min_score"
+minScore = mkParamLens' "min_score"
 
 -- | Default reCAPTCHA timeout duration (600 seconds).
 reCAPTCHATimeout :: TimeoutDuration
