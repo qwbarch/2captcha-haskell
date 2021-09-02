@@ -75,12 +75,12 @@ instance (MonadReader Session m, MonadIO m, MonadCatch m) => TwoCaptchaClient m 
           if currentTime - previousTime >= timeoutDuration
             then throwM SolvingTimeout
             else do
+              liftIO $ threadDelay (pollingInterval * 1000)
               -- Attempt to retrieve the answer. If it's not ready yet, retry.
               answerAttempt <- try $ answer captchaRes
               liftIO $ print answerAttempt
               case answerAttempt of
                 Left (TwoCaptchaResponseException CaptchaNotReady) -> do
-                  liftIO $ threadDelay (pollingInterval * 1000)
                   updatedTime <- time
                   pollAnswer currentTime updatedTime
                 Left exception -> throwM exception

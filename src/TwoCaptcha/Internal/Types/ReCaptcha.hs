@@ -5,7 +5,7 @@ import Data.Text (Text)
 import GHC.Base (Coercible)
 import Network.Wreq (Options)
 import Network.Wreq.Lens (param)
-import TwoCaptcha.Internal.Types.Captcha (HasCaptchaLenses, HasCommonCaptchaLenses, defaultCaptchaOptions, mkLens, mkLens', mkLensBool)
+import TwoCaptcha.Internal.Types.Captcha (HasCaptchaLenses, HasCommonCaptchaLenses, TimeoutDuration, defaultCaptchaOptions, mkLens, mkLens', mkLensBool)
 
 -- | Default options for a reCAPTCHA.
 defaultReCaptchaOptions :: Options
@@ -119,3 +119,7 @@ reCAPTCHAV3 = ReCaptchaV3 $ defaultReCaptchaOptions & param "version" .~ ["v3"]
 -- | The score needed for resolution. Currently it's almost impossible to get a token with a score higher than 0.3
 minScore :: Lens' ReCaptchaV3 (Maybe Double)
 minScore = mkLens' "min_score"
+
+-- | Default reCAPTCHA timeout duration (600 seconds).
+reCAPTCHATimeout :: TimeoutDuration
+reCAPTCHATimeout = 600000

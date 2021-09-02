@@ -14,6 +14,14 @@ type PollingInterval = Int
 -- | Time in milliseconds on when to timeout if the request takes too long.
 type TimeoutDuration = Integer
 
+-- | Default captcha timeout duration (120 seconds).
+captchaTimeout :: TimeoutDuration
+captchaTimeout = 120000
+
+-- | Default polling interval (10 seconds).
+pollingInterval :: PollingInterval
+pollingInterval = 10000
+
 -- | Defaults options for a captcha.
 defaultCaptchaOptions :: Options
 defaultCaptchaOptions = defaults & param "json" .~ ["1"]
@@ -92,6 +100,17 @@ newtype CaptchaRes = CaptchaRes Options deriving (Show)
 
 instance HasCommonCaptchaLenses CaptchaRes
 
+-- |
+-- Parameters for retrieving a captcha's answer.
+--
+-- Required parameters:
+--
+-- * 'apiKey'
+-- * 'captchaId'
+--
+-- Optional parameters:
+--
+-- * 'headerACAO'
 defaultCaptchaRes :: CaptchaRes
 defaultCaptchaRes = CaptchaRes defaults
 
