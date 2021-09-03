@@ -1,14 +1,14 @@
 module TwoCaptcha.Internal.Types.ReCaptcha where
 
-import Control.Lens (Lens', (%~), (&), (.~))
+import Control.Lens (Lens', (%~), (&), (.~), (?~))
 import Data.Text (Text)
 import GHC.Base (Coercible)
 import Network.Wreq.Lens (param)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
 
 -- | Default parameters for solving a recaptcha. Internal use only.
 defaultReCAPTCHA :: Captcha
-defaultReCAPTCHA = defaultCaptcha & options %~ (& param "method" .~ ["userrecaptcha"])
+defaultReCAPTCHA = defaultCaptcha & method ?~ "userrecaptcha"
 
 -- | Lenses for constructing ReCaptcha options.
 class Coercible Captcha a => HasReCaptchaLenses a where

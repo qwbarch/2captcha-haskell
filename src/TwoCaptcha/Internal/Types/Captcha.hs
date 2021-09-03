@@ -1,10 +1,13 @@
 module TwoCaptcha.Internal.Types.Captcha where
 
-import Control.Lens (Lens', iso, lens, (%~), (&), (.~), (^.))
+import Control.Lens (Getter, Lens', iso, lens, to, (%~), (&), (.~), (^.))
 import Control.Lens.TH (makeLenses)
+import Data.String (IsString)
 import Data.Text (Text, pack, unpack)
 import GHC.Base (Coercible, coerce)
-import Network.Wreq (Options, Part, defaults, param)
+import Network.Wreq (Options, Part, defaults, param, partFile, partText)
+
+-- import Prelude hiding (lookup)
 
 -- | The id of a captcha being solved.
 type CaptchaId = Text
@@ -26,26 +29,48 @@ pollingInterval = 10000
 -- | Represents the request information required to solve a captcha.
 data Captcha = MkCaptcha
   { _options :: Options,
-    _parts :: [Part]
+    _partTexts :: [(Text, Text)],
+    _partFiles :: [(Text, FilePath)]
   }
   deriving (Show)
 
 makeLenses ''Captcha
 
+-- | Convert the captcha's multipart form parameters into a ['Part'].
+parts :: Getter Captcha [Part]
+parts = to (\captcha -> (uncurry partText <$> captcha ^. partTexts) ++ (uncurry partFile <$> captcha ^. partFiles))
+
+instance HasCommonCaptchaLenses Captcha
+
+instance HasCaptchaLenses Captcha
+
 -- | Default parameters for solving a captcha. Internal use only.
 defaultCaptcha :: Captcha
-defaultCaptcha = MkCaptcha (defaults & param "json" .~ ["1"]) []
+defaultCaptcha = MkCaptcha (defaults & param "json" .~ ["1"]) [] []
 
--- | Creates a lens using the given field name.
+-- | Create a lens using the given field name for multipart forms.
+mkPartLens :: (Coercible Captcha a, IsString s) => Lens' Captcha [(Text, s)] -> Text -> Lens' a (Maybe s)
+mkPartLens partLens field = lens getter setter
+  where
+    getter a = lookup field (coerce a ^. partLens)
+    setter a (Just value) = coerce $ coerce a & partLens %~ ((field, value) :)
+    setter a Nothing = a
+
+-- | Create a lens using the given field name for multipart form texts.
+mkPartTextLens :: Coercible Captcha a => Text -> Lens' a (Maybe Text)
+mkPartTextLens = mkPartLens partTexts
+
+-- | Create a lens using the given field name for multipart form files.
+mkPartFileLens :: Coercible Captcha a => Text -> Lens' a (Maybe FilePath)
+mkPartFileLens = mkPartLens partFiles
+
+-- | Creates a lens using the given field name for query parameters.
 mkParamLens :: Coercible Captcha a => Text -> Lens' a (Maybe Text)
 mkParamLens field = lens getter setter
   where
     getter a =
-      if null value
-        then Nothing
-        else Just $ head value
-      where
-        value = coerce a ^. options . param field
+      let value = coerce a ^. options . param field
+       in if null value then Nothing else Just $ head value
     setter a (Just value) = coerce $ coerce a & options %~ (& param field .~ [value])
     setter a Nothing = a
 
@@ -92,6 +117,10 @@ class Coercible Captcha a => HasCaptchaLenses a where
   -- | Type of your proxy: __HTTP__, __HTTPS__, __SOCKS4__, __SOCKS5__.
   proxyType :: Lens' a (Maybe Text)
   proxyType = mkParamLens "proxytype"
+
+  -- | Type of captcha to solve.
+  method :: Lens' a (Maybe Text)
+  method = mkParamLens "method"
 
 -- | Lenses for constructing options for 'TwoCaptcha.Internal.Client.submit' and 'TwoCaptcha.Internal.Client.answer'.
 class Coercible Captcha a => HasCommonCaptchaLenses a where

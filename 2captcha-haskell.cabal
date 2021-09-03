@@ -28,6 +28,7 @@ library
       TwoCaptcha.Internal.Client
       TwoCaptcha.Internal.Types.Captcha
       TwoCaptcha.Internal.Types.Exception
+      TwoCaptcha.Internal.Types.Normal
       TwoCaptcha.Internal.Types.ReCaptcha
   other-modules:
       Paths_2captcha_haskell
