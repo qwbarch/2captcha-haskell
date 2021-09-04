@@ -32,6 +32,7 @@ library
       TwoCaptcha.Internal.Types.GridCaptcha
       TwoCaptcha.Internal.Types.NormalCaptcha
       TwoCaptcha.Internal.Types.ReCaptcha
+      TwoCaptcha.Internal.Types.RotateCaptcha
       TwoCaptcha.Internal.Types.TextCaptcha
   other-modules:
       Paths_2captcha_haskell

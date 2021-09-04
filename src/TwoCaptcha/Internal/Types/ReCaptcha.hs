@@ -41,7 +41,7 @@ instance HasCaptchaLenses ReCaptchaV2
 instance HasReCaptchaLenses ReCaptchaV2
 
 -- |
--- Parameters for solving a reCAPTCHA V2.
+-- Parameters used to solve reCAPTCHA V2.
 --
 -- Required parameters:
 --
@@ -94,7 +94,7 @@ instance HasCaptchaLenses ReCaptchaV3
 instance HasReCaptchaLenses ReCaptchaV3
 
 -- |
--- Parameters for solving a reCAPTCHA V3.
+-- Parameters used to solve reCAPTCHA V3.
 --
 -- Required parameters:
 --
