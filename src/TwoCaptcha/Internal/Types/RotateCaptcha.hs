@@ -1,8 +1,7 @@
 module TwoCaptcha.Internal.Types.RotateCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
-import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, defaultCaptcha, mkParamLens', mkPartFileLens, mkPartTextLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens')
 
 -- | Parameters used to solve a rotate captcha.
 newtype RotateCaptcha = MkRotateCaptcha Captcha deriving (Show)
@@ -11,6 +10,8 @@ instance HasCommonCaptchaLenses RotateCaptcha
 
 instance HasCaptchaLenses RotateCaptcha
 
+instance HasLocalImage RotateCaptcha
+
 -- |
 -- Parameters used to solve a rotate captcha.
 --
@@ -18,8 +19,8 @@ instance HasCaptchaLenses RotateCaptcha
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'TwoCaptcha.Internal.Types.Captcha.method'
--- * 'file'*
--- * 'body'*
+-- * 'TwoCaptcha.Internal.Types.Captcha.file'*
+-- * 'TwoCaptcha.Internal.Types.Captcha.body'*
 --
 -- Optional parameters:
 --
@@ -38,11 +39,3 @@ rotateCaptcha = MkRotateCaptcha (defaultCaptcha & method ?~ "rotatecaptcha")
 -- | Angle for one rotation step in degrees. Defaults to 40 degrees if not specified.
 angle :: Lens' RotateCaptcha (Maybe Int)
 angle = mkParamLens' "angle"
-
--- | File path to captcha image.
-file :: Lens' RotateCaptcha (Maybe FilePath)
-file = mkPartFileLens "file"
-
--- | Base-64 encoded image.
-body :: Lens' RotateCaptcha (Maybe Text)
-body = mkPartTextLens "body"

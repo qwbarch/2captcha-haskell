@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.NormalCaptcha where
 
 import Control.Lens (Lens')
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, mkPartFileLens, mkPartTextLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, mkPartFileLens)
 
 -- | Parameters used to solve a normal captcha.
 newtype NormalCaptcha = MkNormalCaptcha Captcha deriving (Show)
@@ -11,6 +11,8 @@ instance HasCommonCaptchaLenses NormalCaptcha
 
 instance HasCaptchaLenses NormalCaptcha
 
+instance HasLocalImage NormalCaptcha
+
 -- |
 -- Parameters for solving a normal captcha.
 --
@@ -18,8 +20,8 @@ instance HasCaptchaLenses NormalCaptcha
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'TwoCaptcha.Internal.Types.Captcha.method'
--- * 'file'*
--- * 'body'*
+-- * 'TwoCaptcha.Internal.Types.Captcha.file'*
+-- * 'TwoCaptcha.Internal.Types.Captcha.body'*
 --
 -- Optional parameters:
 --
@@ -48,14 +50,6 @@ instance HasCaptchaLenses NormalCaptcha
 -- * __body__ is only required if __captcha = "base64"__
 normalCaptcha :: NormalCaptcha
 normalCaptcha = MkNormalCaptcha defaultCaptcha
-
--- | File path to captcha image.
-file :: Lens' NormalCaptcha (Maybe FilePath)
-file = mkPartFileLens "file"
-
--- | Base-64 encoded image.
-body :: Lens' NormalCaptcha (Maybe Text)
-body = mkPartTextLens "body"
 
 -- |
 -- Defines if the captcha is a phrase.

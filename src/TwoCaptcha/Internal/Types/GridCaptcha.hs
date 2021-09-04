@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.GridCaptcha where
 
 import Control.Lens (Lens')
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, mkPartFileLens, mkPartTextLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, mkPartFileLens)
 
 -- | Parameters used to solve a grid captcha.
 newtype GridCaptcha = MkGridCaptcha Captcha deriving (Show)
@@ -10,6 +10,8 @@ newtype GridCaptcha = MkGridCaptcha Captcha deriving (Show)
 instance HasCommonCaptchaLenses GridCaptcha
 
 instance HasCaptchaLenses GridCaptcha
+
+instance HasLocalImage GridCaptcha
 
 -- |
 -- Parameters for solving a grid captcha.
@@ -19,8 +21,8 @@ instance HasCaptchaLenses GridCaptcha
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'TwoCaptcha.Internal.Types.Captcha.method'
 -- * 'reCAPTCHAImage'
--- * 'file'*
--- * 'body'*
+-- * 'TwoCaptcha.Internal.Types.Captcha.file'*
+-- * 'TwoCaptcha.Internal.Types.Captcha.body'*
 --
 -- Optional parameters:
 --
@@ -57,14 +59,6 @@ reCAPTCHAImage = mkParamLensBool "recaptcha"
 -- | Defines that you want to use a <https://2captcha.com/2captcha-api#canvas canvas> method.
 canvas :: Lens' GridCaptcha (Maybe Bool)
 canvas = mkParamLensBool "canvas"
-
--- | File path to captcha image.
-file :: Lens' GridCaptcha (Maybe FilePath)
-file = mkPartFileLens "file"
-
--- | Base-64 encoded image.
-body :: Lens' GridCaptcha (Maybe Text)
-body = mkPartTextLens "body"
 
 -- | Text which is shown to the worker to help solve a captcha.
 textInstructions :: Lens' GridCaptcha (Maybe Text)

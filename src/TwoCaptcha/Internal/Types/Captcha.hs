@@ -162,3 +162,12 @@ class Coercible Captcha a => HasProxy a where
   -- | Type of your proxy: __HTTP__, __HTTPS__, __SOCKS4__, __SOCKS5__.
   proxyType :: Lens' a (Maybe Text)
   proxyType = mkParamLens "proxytype"
+
+class Coercible Captcha a => HasLocalImage a where
+  -- | File path of a captcha image.
+  file :: Lens' a (Maybe FilePath)
+  file = mkPartFileLens "file"
+
+  -- | Base-64 encoded image.
+  body :: Lens' a (Maybe Text)
+  body = mkPartTextLens "body"
