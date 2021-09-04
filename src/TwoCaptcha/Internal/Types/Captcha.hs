@@ -193,3 +193,8 @@ class Coercible Captcha a => HasLanguage a where
   -- | The captcha's language code. Click <https://2captcha.com/2captcha-api#language here> for a list of supported languages.
   languageCode :: Lens' a (Maybe Text)
   languageCode = mkParamLens "lang"
+
+class Coercible Captcha a => HasUserAgent a where
+  -- | User agent that will be used by the worker when solving the captcha.
+  userAgent :: Lens' a (Maybe Text)
+  userAgent = mkParamLens "userAgent"

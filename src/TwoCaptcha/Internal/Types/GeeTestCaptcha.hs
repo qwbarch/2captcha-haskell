@@ -28,7 +28,7 @@ instance HasProxy GeeTestCaptcha
 -- Optional parameters:
 --
 -- * 'apiServer'
--- * 'userAgent'
+-- * 'TwoCaptcha.Internal.Types.Captcha.userAgent'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
@@ -48,7 +48,3 @@ challenge = mkParamLens "challenge"
 -- | Value of __api_server__ parameter you found on target website.
 apiServer :: Lens' GeeTestCaptcha (Maybe Text)
 apiServer = mkParamLens "api_server"
-
--- | User agent that will be used by the worker solving the GeeTest captcha.
-userAgent :: Lens' GeeTestCaptcha (Maybe Text)
-userAgent = mkParamLens "userAgent"

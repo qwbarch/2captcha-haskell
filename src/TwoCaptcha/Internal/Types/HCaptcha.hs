@@ -28,7 +28,7 @@ instance HasProxy HCaptcha
 --
 -- * 'invisible'
 -- * 'customData'
--- * 'userAgent'
+-- * 'TwoCaptcha.Internal.Types.Captcha.userAgent'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
@@ -53,7 +53,3 @@ invisible = mkParamLensBool "invisible"
 -- The value should match the User-Agent you use when interacting with target website.
 customData :: Lens' HCaptcha (Maybe Text)
 customData = mkParamLens "data"
-
--- | User agent that will be used by the worker solving the hCaptcha.
-userAgent :: Lens' HCaptcha (Maybe Text)
-userAgent = mkParamLens "userAgent"

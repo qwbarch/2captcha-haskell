@@ -4,7 +4,7 @@ import Control.Lens (Lens', (%~), (&), (.~), (?~))
 import Data.Text (Text)
 import GHC.Base (Coercible)
 import Network.Wreq.Lens (param)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, HasUserAgent, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
 
 -- | Default parameters for solving a recaptcha. Internal use only.
 defaultReCAPTCHA :: Captcha
@@ -40,6 +40,8 @@ instance HasPageURL ReCaptchaV2
 
 instance HasProxy ReCaptchaV2
 
+instance HasUserAgent ReCaptchaV2
+
 -- |
 -- Parameters used to solve reCAPTCHA V2.
 --
@@ -56,7 +58,7 @@ instance HasProxy ReCaptchaV2
 -- * 'invisible'
 -- * 'dataS'
 -- * 'cookies'
--- * 'userAgent'
+-- * 'TwoCaptcha.Internal.Types.Captcha.userAgent'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
@@ -79,10 +81,6 @@ dataS = mkParamLens "data-s"
 -- Format: __KEY1:Value1;KEY2:Value2;__
 cookies :: Lens' ReCaptchaV2 (Maybe Text)
 cookies = mkParamLens "cookies"
-
--- | User agent that will be used by the worker solving the reCAPTCHA.
-userAgent :: Lens' ReCaptchaV2 (Maybe Text)
-userAgent = mkParamLens "userAgent"
 
 -- | Parameters used to solve reCAPTCHA V3.
 newtype ReCaptchaV3 = MkReCaptchaV3 Captcha deriving (Show)
