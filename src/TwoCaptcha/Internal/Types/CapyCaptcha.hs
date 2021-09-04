@@ -1,0 +1,47 @@
+module TwoCaptcha.Internal.Types.CapyCaptcha where
+
+import Control.Lens (Lens', (&), (?~))
+import Data.Text (Text)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, defaultCaptcha, mkParamLens)
+
+-- | Parameters used to solve a capy puzzle captcha.
+newtype CapyCaptcha = MkCapyCaptcha Captcha deriving (Show)
+
+instance HasCommonCaptchaLenses CapyCaptcha
+
+instance HasCaptchaLenses CapyCaptcha
+
+-- |
+-- Parameters used to solve a capy puzzle captcha.
+--
+-- Required parameters:
+--
+-- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
+-- * 'captchaKey'
+-- * 'pageUrl'
+--
+-- Optional parameters:
+--
+-- * 'apiServer'
+-- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
+-- * 'TwoCaptcha.Internal.Types.Captcha.softId'
+-- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
+-- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'
+capyCaptcha :: CapyCaptcha
+capyCaptcha = MkCapyCaptcha (defaultCaptcha & method ?~ "capy")
+
+-- | Value of __captchakey__ parameter you found on page.
+captchaKey :: Lens' CapyCaptcha (Maybe Text)
+captchaKey = mkParamLens "captchakey"
+
+-- |
+-- The domain part of the script URL found on page.
+--
+-- If not specified, defaults to: https://jp.api.capy.me/
+apiServer :: Lens' CapyCaptcha (Maybe Text)
+apiServer = mkParamLens "api_server"
+
+-- | Full URL of the page where the capy puzzle is found.
+pageUrl :: Lens' CapyCaptcha (Maybe Text)
+pageUrl = mkParamLens "api_server"
