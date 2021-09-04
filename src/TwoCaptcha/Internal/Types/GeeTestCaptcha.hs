@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.GeeTestCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, defaultCaptcha, mkParamLens)
 
 -- | Parameters used to solve a GeeTest captcha.
 newtype GeeTestCaptcha = MkGeeTestCaptcha Captcha deriving (Show)
@@ -12,6 +12,8 @@ instance HasCommonCaptchaLenses GeeTestCaptcha
 instance HasCaptchaLenses GeeTestCaptcha
 
 instance HasPageURL GeeTestCaptcha
+
+instance HasProxy GeeTestCaptcha
 
 -- |
 -- Parameters used to solve a GeeTest captcha.

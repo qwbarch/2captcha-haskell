@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.CapyCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, defaultCaptcha, mkParamLens)
 
 -- | Parameters used to solve a capy puzzle captcha.
 newtype CapyCaptcha = MkCapyCaptcha Captcha deriving (Show)
@@ -10,6 +10,8 @@ newtype CapyCaptcha = MkCapyCaptcha Captcha deriving (Show)
 instance HasCommonCaptchaLenses CapyCaptcha
 
 instance HasPageURL CapyCaptcha
+
+instance HasProxy CapyCaptcha
 
 -- |
 -- Parameters used to solve a capy puzzle captcha.

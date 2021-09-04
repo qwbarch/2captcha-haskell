@@ -4,7 +4,7 @@ import Control.Lens (Lens', (%~), (&), (.~), (?~))
 import Data.Text (Text)
 import GHC.Base (Coercible)
 import Network.Wreq.Lens (param)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
 
 -- | Default parameters for solving a recaptcha. Internal use only.
 defaultReCAPTCHA :: Captcha
@@ -37,6 +37,8 @@ instance HasCaptchaLenses ReCaptchaV2
 instance HasReCaptchaLenses ReCaptchaV2
 
 instance HasPageURL ReCaptchaV2
+
+instance HasProxy ReCaptchaV2
 
 -- |
 -- Parameters used to solve reCAPTCHA V2.

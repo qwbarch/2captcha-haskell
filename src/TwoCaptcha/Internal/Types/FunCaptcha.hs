@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.FunCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, defaultCaptcha, mkParamLens)
 
 -- | Parameters used to solve FunCaptcha.
 newtype FunCaptcha = MkFunCaptcha Captcha deriving (Show)
@@ -12,6 +12,8 @@ instance HasCommonCaptchaLenses FunCaptcha
 instance HasCaptchaLenses FunCaptcha
 
 instance HasPageURL FunCaptcha
+
+instance HasProxy FunCaptcha
 
 -- |
 -- Parameters used to solve FunCaptcha.

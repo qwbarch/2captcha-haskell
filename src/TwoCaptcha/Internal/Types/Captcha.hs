@@ -107,17 +107,6 @@ class Coercible Captcha a => HasCaptchaLenses a where
   pingback :: Lens' a (Maybe Text)
   pingback = mkParamLens "pingback"
 
-  -- |
-  -- Proxy to be sent to the worker who solves the captcha. You can read more about proxies <https://2captcha.com/2captcha-api#proxies here>.
-  --
-  -- Format must be in __login:password@123.123.123.123:3128__ .
-  proxy :: Lens' a (Maybe Text)
-  proxy = mkParamLens "proxy"
-
-  -- | Type of your proxy: __HTTP__, __HTTPS__, __SOCKS4__, __SOCKS5__.
-  proxyType :: Lens' a (Maybe Text)
-  proxyType = mkParamLens "proxytype"
-
   -- | Type of captcha to solve.
   method :: Lens' a (Maybe Text)
   method = mkParamLens "method"
@@ -161,3 +150,15 @@ class Coercible Captcha a => HasPageURL a where
   -- | Full URL of the page where the captcha is found.
   pageUrl :: Lens' a (Maybe Text)
   pageUrl = mkParamLens "pageurl"
+
+class Coercible Captcha a => HasProxy a where
+  -- |
+  -- Proxy to be sent to the worker who solves the captcha. You can read more about proxies <https://2captcha.com/2captcha-api#proxies here>.
+  --
+  -- Format must be in __login:password@123.123.123.123:3128__ .
+  proxy :: Lens' a (Maybe Text)
+  proxy = mkParamLens "proxy"
+
+  -- | Type of your proxy: __HTTP__, __HTTPS__, __SOCKS4__, __SOCKS5__.
+  proxyType :: Lens' a (Maybe Text)
+  proxyType = mkParamLens "proxytype"

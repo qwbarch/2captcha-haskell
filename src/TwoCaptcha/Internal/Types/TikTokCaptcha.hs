@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.TikTokCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens, mkParamLens')
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, defaultCaptcha, mkParamLens, mkParamLens')
 
 -- | Parameters used to solve a TikTok captcha.
 newtype TikTokCaptcha = MkTikTokCaptcha Captcha deriving (Show)
@@ -12,6 +12,8 @@ instance HasCommonCaptchaLenses TikTokCaptcha
 instance HasCaptchaLenses TikTokCaptcha
 
 instance HasPageURL TikTokCaptcha
+
+instance HasProxy TikTokCaptcha
 
 -- |
 -- Parameters used to solve a TikTok captcha.

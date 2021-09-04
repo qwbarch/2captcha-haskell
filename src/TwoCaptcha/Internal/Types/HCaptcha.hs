@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.HCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens, mkParamLensBool)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, defaultCaptcha, mkParamLens, mkParamLensBool)
 
 -- | Parameters used to solve hCaptcha.
 newtype HCaptcha = MkHCaptcha Captcha deriving (Show)
@@ -12,6 +12,8 @@ instance HasCommonCaptchaLenses HCaptcha
 instance HasCaptchaLenses HCaptcha
 
 instance HasPageURL HCaptcha
+
+instance HasProxy HCaptcha
 
 -- |
 -- Parameters used to solve hCaptcha.
