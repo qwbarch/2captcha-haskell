@@ -4,7 +4,7 @@ import Control.Lens (Lens', (%~), (&), (.~), (?~))
 import Data.Text (Text)
 import GHC.Base (Coercible)
 import Network.Wreq.Lens (param)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, HasProxy, HasUserAgent, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasCookies, HasPageURL, HasProxy, HasUserAgent, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
 
 -- | Default parameters for solving a recaptcha. Internal use only.
 defaultReCAPTCHA :: Captcha
@@ -42,6 +42,8 @@ instance HasProxy ReCaptchaV2
 
 instance HasUserAgent ReCaptchaV2
 
+instance HasCookies ReCaptchaV2
+
 -- |
 -- Parameters used to solve reCAPTCHA V2.
 --
@@ -57,7 +59,7 @@ instance HasUserAgent ReCaptchaV2
 -- * 'domain'
 -- * 'invisible'
 -- * 'dataS'
--- * 'cookies'
+-- * 'TwoCaptcha.Internal.Types.Captcha.cookies'
 -- * 'TwoCaptcha.Internal.Types.Captcha.userAgent'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
@@ -74,13 +76,6 @@ invisible = mkParamLensBool "invisible"
 -- | Value of the __data-s__ parameter found on the reCAPTCHA page. Currently applicable for google services.
 dataS :: Lens' ReCaptchaV2 (Maybe Text)
 dataS = mkParamLens "data-s"
-
--- |
--- Cookies that will be used by the worker solving the reCAPTCHA. The used cookies will also be included in the response.
---
--- Format: __KEY1:Value1;KEY2:Value2;__
-cookies :: Lens' ReCaptchaV2 (Maybe Text)
-cookies = mkParamLens "cookies"
 
 -- | Parameters used to solve reCAPTCHA V3.
 newtype ReCaptchaV3 = MkReCaptchaV3 Captcha deriving (Show)

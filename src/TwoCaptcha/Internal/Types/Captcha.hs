@@ -198,3 +198,11 @@ class Coercible Captcha a => HasUserAgent a where
   -- | User agent that will be used by the worker when solving the captcha.
   userAgent :: Lens' a (Maybe Text)
   userAgent = mkParamLens "userAgent"
+
+class Coercible Captcha a => HasCookies a where
+  -- |
+  -- Cookies that will be used by the worker solving the captcha. The used cookies will also be included in the response.
+  --
+  -- Format: __KEY1:Value1;KEY2:Value2;__
+  cookies :: Lens' a (Maybe Text)
+  cookies = mkParamLens "cookies"
