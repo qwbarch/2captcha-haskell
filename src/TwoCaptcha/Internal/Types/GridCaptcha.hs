@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.GridCaptcha where
 
 import Control.Lens (Lens')
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLanguage, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool)
 
 -- | Parameters used to solve a grid captcha.
 newtype GridCaptcha = MkGridCaptcha Captcha deriving (Show)
@@ -12,6 +12,8 @@ instance HasCommonCaptchaLenses GridCaptcha
 instance HasCaptchaLenses GridCaptcha
 
 instance HasLocalImage GridCaptcha
+
+instance HasLanguage GridCaptcha
 
 -- |
 -- Parameters for solving a grid captcha.
@@ -34,8 +36,8 @@ instance HasLocalImage GridCaptcha
 -- * 'columns'
 -- * 'previousId'
 -- * 'cannotAnswer'
--- * 'language'
--- * 'languageCode'
+-- * 'TwoCaptcha.Internal.Types.Captcha.language'
+-- * 'TwoCaptcha.Internal.Types.Captcha.languageCode'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
@@ -75,16 +77,3 @@ previousId = mkParamLens "previousID"
 -- | Defines if the captcha can potentially have no images, or possibly cannot be answered.
 cannotAnswer :: Lens' GridCaptcha (Maybe Bool)
 cannotAnswer = mkParamLensBool "can_no_answer"
-
--- |
--- The captcha's language:
---
--- 0. Not specified.
--- 1. Cyrillic captcha.
--- 2. Latin captcha.
-language :: Lens' GridCaptcha (Maybe Int)
-language = mkParamLens' "language"
-
--- | The captcha's language code. Click <https://2captcha.com/2captcha-api#language here> for a list of supported languages.
-languageCode :: Lens' GridCaptcha (Maybe Text)
-languageCode = mkParamLens "lang"

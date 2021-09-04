@@ -1,8 +1,7 @@
 module TwoCaptcha.Internal.Types.CoordinateCaptcha where
 
 import Control.Lens (Lens')
-import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLanguage, HasLocalImage, defaultCaptcha, mkParamLensBool)
 
 -- | Parameters used to solve a coordinate captcha.
 newtype CoordinateCaptcha = MkCoordinateCaptcha Captcha deriving (Show)
@@ -12,6 +11,8 @@ instance HasCommonCaptchaLenses CoordinateCaptcha
 instance HasCaptchaLenses CoordinateCaptcha
 
 instance HasLocalImage CoordinateCaptcha
+
+instance HasLanguage CoordinateCaptcha
 
 -- | Parameters used to solve a coordinate captcha.
 --
@@ -27,8 +28,8 @@ instance HasLocalImage CoordinateCaptcha
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.textInstructions'
 -- * 'TwoCaptcha.Internal.Types.Captcha.imgInstructions'
--- * 'language'
--- * 'languageCode'
+-- * 'TwoCaptcha.Internal.Types.Captcha.language'
+-- * 'TwoCaptcha.Internal.Types.Captcha.languageCode'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
@@ -38,16 +39,3 @@ coordinateCaptcha = MkCoordinateCaptcha defaultCaptcha
 -- | Defines that you're sending a reCAPTCHA as an image.
 reCAPTCHAImage :: Lens' CoordinateCaptcha (Maybe Bool)
 reCAPTCHAImage = mkParamLensBool "recaptcha"
-
--- |
--- The captcha's language:
---
--- 0. Not specified.
--- 1. Cyrillic captcha.
--- 2. Latin captcha.
-language :: Lens' CoordinateCaptcha (Maybe Int)
-language = mkParamLens' "language"
-
--- | The captcha's language code. Click <https://2captcha.com/2captcha-api#language here> for a list of supported languages.
-languageCode :: Lens' CoordinateCaptcha (Maybe Text)
-languageCode = mkParamLens "lang"

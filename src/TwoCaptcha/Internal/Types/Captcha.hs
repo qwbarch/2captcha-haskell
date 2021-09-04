@@ -179,3 +179,17 @@ class Coercible Captcha a => HasLocalImage a where
   -- | Image file path with instructions on solving a captcha.
   imgInstructions :: Lens' a (Maybe FilePath)
   imgInstructions = mkPartFileLens "imgInstructions"
+
+class Coercible Captcha a => HasLanguage a where
+  -- |
+  -- The captcha's language:
+  --
+  -- 0. Not specified.
+  -- 1. Cyrillic captcha.
+  -- 2. Latin captcha.
+  language :: Lens' a (Maybe Int)
+  language = mkParamLens' "language"
+
+  -- | The captcha's language code. Click <https://2captcha.com/2captcha-api#language here> for a list of supported languages.
+  languageCode :: Lens' a (Maybe Text)
+  languageCode = mkParamLens "lang"

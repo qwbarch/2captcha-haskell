@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.NormalCaptcha where
 
 import Control.Lens (Lens')
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLanguage, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool)
 
 -- | Parameters used to solve a normal captcha.
 newtype NormalCaptcha = MkNormalCaptcha Captcha deriving (Show)
@@ -12,6 +12,8 @@ instance HasCommonCaptchaLenses NormalCaptcha
 instance HasCaptchaLenses NormalCaptcha
 
 instance HasLocalImage NormalCaptcha
+
+instance HasLanguage NormalCaptcha
 
 -- |
 -- Parameters for solving a normal captcha.
@@ -31,8 +33,8 @@ instance HasLocalImage NormalCaptcha
 -- * 'calc'
 -- * 'minLength'
 -- * 'maxLength'
--- * 'language'
--- * 'languageCode'
+-- * 'TwoCaptcha.Internal.Types.Captcha.language'
+-- * 'TwoCaptcha.Internal.Types.Captcha.languageCode'
 -- * 'TwoCaptcha.Internal.Types.Captcha.textInstructions'
 -- * 'TwoCaptcha.Internal.Types.Captcha.imgInstructions'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
