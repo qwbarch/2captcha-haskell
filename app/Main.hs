@@ -36,6 +36,7 @@ import TwoCaptcha.Captcha
     normalCaptcha,
     pollingInterval,
     publicKey,
+    reCAPTCHATimeout,
     reCAPTCHAV2,
     reCAPTCHAV3,
     rotateCaptcha,
@@ -145,7 +146,7 @@ reCAPTCHAV2Example = do
           & googleKey ?~ "GOOGLE_KEY_VALUE"
           & pageUrl ?~ "PAGE_URL"
   session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+  solve session captcha pollingInterval reCAPTCHATimeout
 
 reCAPTCHAV3Example = do
   let captcha =
@@ -154,7 +155,7 @@ reCAPTCHAV3Example = do
           & googleKey ?~ "GOOGLE_KEY_VALUE"
           & pageUrl ?~ "PAGE_URL"
   session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+  solve session captcha pollingInterval reCAPTCHATimeout
 
 rotateExample = do
   let captcha =
