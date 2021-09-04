@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.TikTokCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, defaultCaptcha, mkParamLens, mkParamLens')
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens, mkParamLens')
 
 -- | Parameters used to solve a TikTok captcha.
 newtype TikTokCaptcha = MkTikTokCaptcha Captcha deriving (Show)
@@ -10,6 +10,8 @@ newtype TikTokCaptcha = MkTikTokCaptcha Captcha deriving (Show)
 instance HasCommonCaptchaLenses TikTokCaptcha
 
 instance HasCaptchaLenses TikTokCaptcha
+
+instance HasPageURL TikTokCaptcha
 
 -- |
 -- Parameters used to solve a TikTok captcha.
@@ -20,12 +22,8 @@ instance HasCaptchaLenses TikTokCaptcha
 -- * 'cookies'
 -- * 'aid'
 -- * 'host'
--- * 'pageUrl'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
--- Optional parameters:
---
--- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
--- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'
@@ -46,7 +44,3 @@ aid = mkParamLens' "aid"
 -- | The __host__ parameter value found on the page.
 host :: Lens' TikTokCaptcha (Maybe Text)
 host = mkParamLens "host"
-
--- | Full URL of the page where the TikTok captcha is found.
-pageUrl :: Lens' TikTokCaptcha (Maybe Text)
-pageUrl = mkParamLens "pageurl"

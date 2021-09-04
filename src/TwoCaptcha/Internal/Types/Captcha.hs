@@ -156,3 +156,8 @@ captchaRes = CaptchaRes (defaultCaptcha & options %~ (& param "action" .~ ["get"
 -- | The captcha id returned from 'TwoCaptcha.Internal.Client.submit'.
 captchaId :: Lens' CaptchaRes (Maybe Text)
 captchaId = mkParamLens "id"
+
+class Coercible Captcha a => HasPageURL a where
+  -- | Full URL of the page where the captcha is found.
+  pageUrl :: Lens' a (Maybe Text)
+  pageUrl = mkParamLens "pageurl"

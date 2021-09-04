@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.FunCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, defaultCaptcha, mkParamLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens)
 
 -- | Parameters used to solve FunCaptcha.
 newtype FunCaptcha = MkFunCaptcha Captcha deriving (Show)
@@ -11,6 +11,8 @@ instance HasCommonCaptchaLenses FunCaptcha
 
 instance HasCaptchaLenses FunCaptcha
 
+instance HasPageURL FunCaptcha
+
 -- |
 -- Parameters used to solve FunCaptcha.
 --
@@ -18,7 +20,7 @@ instance HasCaptchaLenses FunCaptcha
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'publicKey'
--- * 'pageUrl'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
 -- Optional parameters:
 --
@@ -40,10 +42,6 @@ publicKey = mkParamLens "publickey"
 -- | Value of __surl__ found on the FunCaptcha page.
 surl :: Lens' FunCaptcha (Maybe Text)
 surl = mkParamLens "surl"
-
--- | Full URL of the page where you see the FunCaptcha.
-pageUrl :: Lens' FunCaptcha (Maybe Text)
-pageUrl = mkParamLens "pageurl"
 
 -- | Custom data to pass to FunCaptcha.
 customData :: Text -> Lens' FunCaptcha (Maybe Text)

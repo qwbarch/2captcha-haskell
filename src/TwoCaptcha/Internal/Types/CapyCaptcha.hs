@@ -2,14 +2,14 @@ module TwoCaptcha.Internal.Types.CapyCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, defaultCaptcha, mkParamLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens)
 
 -- | Parameters used to solve a capy puzzle captcha.
 newtype CapyCaptcha = MkCapyCaptcha Captcha deriving (Show)
 
 instance HasCommonCaptchaLenses CapyCaptcha
 
-instance HasCaptchaLenses CapyCaptcha
+instance HasPageURL CapyCaptcha
 
 -- |
 -- Parameters used to solve a capy puzzle captcha.
@@ -18,7 +18,7 @@ instance HasCaptchaLenses CapyCaptcha
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'captchaKey'
--- * 'pageUrl'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
 -- Optional parameters:
 --
@@ -41,7 +41,3 @@ captchaKey = mkParamLens "captchakey"
 -- If not specified, defaults to: https://jp.api.capy.me/
 apiServer :: Lens' CapyCaptcha (Maybe Text)
 apiServer = mkParamLens "api_server"
-
--- | Full URL of the page where the capy puzzle is found.
-pageUrl :: Lens' CapyCaptcha (Maybe Text)
-pageUrl = mkParamLens "api_server"

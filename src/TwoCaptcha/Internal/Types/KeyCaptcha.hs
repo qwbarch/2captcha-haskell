@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.KeyCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, defaultCaptcha, mkParamLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens)
 
 -- | Parameters used to solve KeyCaptcha.
 newtype KeyCaptcha = MkKeyCaptcha Captcha deriving (Show)
@@ -10,6 +10,8 @@ newtype KeyCaptcha = MkKeyCaptcha Captcha deriving (Show)
 instance HasCommonCaptchaLenses KeyCaptcha
 
 instance HasCaptchaLenses KeyCaptcha
+
+instance HasPageURL KeyCaptcha
 
 -- |
 -- Parameters used to solve a KeyCaptcha.
@@ -21,7 +23,7 @@ instance HasCaptchaLenses KeyCaptcha
 -- * 'sessionId'
 -- * 'webServerSign'
 -- * 'webServerSign2'
--- * 'pageUrl'
+-- * 'TwoCaptchal.Internal.Types.Captcha.pageUrl'
 --
 -- Optional parameters:
 --
@@ -46,7 +48,3 @@ webServerSign = mkParamLens "s_s_c_web_server_sign"
 -- | Value of __s_s_c_web_server_sign2__ parameter you found on page.
 webServerSign2 :: Lens' KeyCaptcha (Maybe Text)
 webServerSign2 = mkParamLens "s_s_c_web_server_sign2"
-
--- | Full URL of the page where the KeyCaptcha is found.
-pageUrl :: Lens' KeyCaptcha (Maybe Text)
-pageUrl = mkParamLens "pageurl"

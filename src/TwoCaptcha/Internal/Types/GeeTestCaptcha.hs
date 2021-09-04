@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.GeeTestCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, defaultCaptcha, mkParamLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens)
 
 -- | Parameters used to solve a GeeTest captcha.
 newtype GeeTestCaptcha = MkGeeTestCaptcha Captcha deriving (Show)
@@ -10,6 +10,8 @@ newtype GeeTestCaptcha = MkGeeTestCaptcha Captcha deriving (Show)
 instance HasCommonCaptchaLenses GeeTestCaptcha
 
 instance HasCaptchaLenses GeeTestCaptcha
+
+instance HasPageURL GeeTestCaptcha
 
 -- |
 -- Parameters used to solve a GeeTest captcha.
@@ -19,7 +21,7 @@ instance HasCaptchaLenses GeeTestCaptcha
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'gt'
 -- * 'challenge'
--- * 'pageUrl'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
 -- Optional parameters:
 --
@@ -44,10 +46,6 @@ challenge = mkParamLens "challenge"
 -- | Value of __api_server__ parameter you found on target website.
 apiServer :: Lens' GeeTestCaptcha (Maybe Text)
 apiServer = mkParamLens "api_server"
-
--- | Full URL of the page where the GeeTest captcha is found.
-pageUrl :: Lens' GeeTestCaptcha (Maybe Text)
-pageUrl = mkParamLens "pageurl"
 
 -- | User agent that will be used by the worker solving the GeeTest captcha.
 userAgent :: Lens' GeeTestCaptcha (Maybe Text)

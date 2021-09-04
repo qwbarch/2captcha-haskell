@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.HCaptcha where
 
 import Control.Lens (Lens', (&), (?~))
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, defaultCaptcha, mkParamLens, mkParamLensBool)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, defaultCaptcha, mkParamLens, mkParamLensBool)
 
 -- | Parameters used to solve hCaptcha.
 newtype HCaptcha = MkHCaptcha Captcha deriving (Show)
@@ -11,6 +11,8 @@ instance HasCommonCaptchaLenses HCaptcha
 
 instance HasCaptchaLenses HCaptcha
 
+instance HasPageURL HCaptcha
+
 -- |
 -- Parameters used to solve hCaptcha.
 --
@@ -18,7 +20,7 @@ instance HasCaptchaLenses HCaptcha
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'sitekey'
--- * 'pageUrl'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
 -- Optional parameters:
 --
@@ -36,10 +38,6 @@ hCaptcha = MkHCaptcha (defaultCaptcha & method ?~ "hcaptcha")
 -- | Value of __data-sitekey__ parameter on target website.
 siteKey :: Lens' HCaptcha (Maybe Text)
 siteKey = mkParamLens "sitekey"
-
--- | Full URL of the page where the hCaptcha is found.
-pageUrl :: Lens' HCaptcha (Maybe Text)
-pageUrl = mkParamLens "pageurl"
 
 -- | Defines if the captcha is invisible. Invisible hCaptchas are currently a rare case.
 invisible :: Lens' HCaptcha (Maybe Bool)

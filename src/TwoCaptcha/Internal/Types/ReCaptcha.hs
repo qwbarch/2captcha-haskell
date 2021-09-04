@@ -4,7 +4,7 @@ import Control.Lens (Lens', (%~), (&), (.~), (?~))
 import Data.Text (Text)
 import GHC.Base (Coercible)
 import Network.Wreq.Lens (param)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses (method), HasCommonCaptchaLenses, HasPageURL, TimeoutDuration, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, options)
 
 -- | Default parameters for solving a recaptcha. Internal use only.
 defaultReCAPTCHA :: Captcha
@@ -23,10 +23,6 @@ class Coercible Captcha a => HasReCaptchaLenses a where
   googleKey :: Lens' a (Maybe Text)
   googleKey = mkParamLens "googlekey"
 
-  -- | Full URL of the page where the reCAPTCHA is found.
-  pageUrl :: Lens' a (Maybe Text)
-  pageUrl = mkParamLens "pageurl"
-
   -- | Domain used to load the captcha: __google.com__ or __recaptcha.net__.
   domain :: Lens' a (Maybe Text)
   domain = mkParamLens "domain"
@@ -40,6 +36,8 @@ instance HasCaptchaLenses ReCaptchaV2
 
 instance HasReCaptchaLenses ReCaptchaV2
 
+instance HasPageURL ReCaptchaV2
+
 -- |
 -- Parameters used to solve reCAPTCHA V2.
 --
@@ -47,7 +45,7 @@ instance HasReCaptchaLenses ReCaptchaV2
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'googleKey'
--- * 'pageUrl'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
 -- Optional parameters:
 --
@@ -93,6 +91,8 @@ instance HasCaptchaLenses ReCaptchaV3
 
 instance HasReCaptchaLenses ReCaptchaV3
 
+instance HasPageURL ReCaptchaV3
+
 -- |
 -- Parameters used to solve reCAPTCHA V3.
 --
@@ -100,7 +100,7 @@ instance HasReCaptchaLenses ReCaptchaV3
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'googleKey'
--- * 'pageUrl'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
 -- Optional parameters:
 --
