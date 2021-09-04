@@ -32,6 +32,8 @@ instance HasCaptchaLenses GridCaptcha
 -- * 'columns'
 -- * 'previousId'
 -- * 'cannotAnswer'
+-- * 'language'
+-- * 'languageCode'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'

@@ -27,6 +27,7 @@ library
   exposed-modules:
       TwoCaptcha.Internal.Client
       TwoCaptcha.Internal.Types.Captcha
+      TwoCaptcha.Internal.Types.CoordinateCaptcha
       TwoCaptcha.Internal.Types.Exception
       TwoCaptcha.Internal.Types.GridCaptcha
       TwoCaptcha.Internal.Types.NormalCaptcha
