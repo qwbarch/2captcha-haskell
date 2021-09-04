@@ -18,7 +18,6 @@ instance HasLocalImage RotateCaptcha
 -- Required parameters:
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
--- * 'TwoCaptcha.Internal.Types.Captcha.method'
 -- * 'TwoCaptcha.Internal.Types.Captcha.file'*
 -- * 'TwoCaptcha.Internal.Types.Captcha.body'*
 --

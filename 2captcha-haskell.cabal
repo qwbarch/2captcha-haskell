@@ -6,7 +6,7 @@ cabal-version: 1.12
 
 name:           2captcha-haskell
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/2captcha-haskell#readme>
+description:    Haskell package for easy integration with the 2captcha API.
 homepage:       https://github.com/qwbarch/2captcha-haskell#readme
 bug-reports:    https://github.com/qwbarch/2captcha-haskell/issues
 author:         Edward Yang

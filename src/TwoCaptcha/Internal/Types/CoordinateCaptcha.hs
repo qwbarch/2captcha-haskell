@@ -20,7 +20,7 @@ instance HasLanguage CoordinateCaptcha
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'TwoCaptcha.Internal.Types.Captcha.method'
--- * 'coordinatesCaptcha'
+-- * 'coordinateReCAPTCHAImage'
 -- * 'TwoCaptcha.Internal.Types.Captcha.file'*
 -- * 'TwoCaptcha.Internal.Types.Captcha.body'*
 --
@@ -33,9 +33,19 @@ instance HasLanguage CoordinateCaptcha
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
+--
+-- Possible 'TwoCaptcha.Internal.Types.Captcha.method' values:
+--
+-- * __post__ - defines that you're sending an image with multipart form
+-- * __base64__  - defines that you're sending a base64 encoded image
+--
+-- Starred required parameter rules:
+--
+-- * __file__ is only required if __captcha = "post"__
+-- * __body__ is only required if __captcha = "base64"__
 coordinateCaptcha :: CoordinateCaptcha
 coordinateCaptcha = MkCoordinateCaptcha defaultCaptcha
 
 -- | Defines that you're sending a reCAPTCHA as an image.
-coordinatesCaptcha :: Lens' CoordinateCaptcha (Maybe Bool)
-coordinatesCaptcha = mkParamLensBool "coordinatescaptcha"
+coordinateReCAPTCHAImage :: Lens' CoordinateCaptcha (Maybe Bool)
+coordinateReCAPTCHAImage = mkParamLensBool "coordinatescaptcha"

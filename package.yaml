@@ -10,7 +10,7 @@ extra-source-files:
 - README.md
 - ChangeLog.md
 
-description:         Please see the README on GitHub at <https://github.com/githubuser/2captcha-haskell#readme>
+description: Haskell package for easy integration with the 2captcha API. 
 
 dependencies:
 - base >= 4.7 && < 5

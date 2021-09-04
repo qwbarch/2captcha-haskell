@@ -9,6 +9,8 @@ newtype CapyCaptcha = MkCapyCaptcha Captcha deriving (Show)
 
 instance HasCommonCaptchaLenses CapyCaptcha
 
+instance HasCaptchaLenses CapyCaptcha
+
 instance HasPageURL CapyCaptcha
 
 instance HasProxy CapyCaptcha
@@ -19,6 +21,7 @@ instance HasProxy CapyCaptcha
 -- Required parameters:
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
+-- * 'captchaKey'
 -- * 'scriptDomain'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
