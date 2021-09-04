@@ -27,7 +27,7 @@ instance HasProxy FunCaptcha
 -- Optional parameters:
 --
 -- * 'surl'
--- * 'customData'
+-- * 'customDataField'
 -- * 'TwoCaptcha.Internal.Types.Captcha.userAgent'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
@@ -46,5 +46,5 @@ surl :: Lens' FunCaptcha (Maybe Text)
 surl = mkParamLens "surl"
 
 -- | Custom data to pass to FunCaptcha.
-customData :: Text -> Lens' FunCaptcha (Maybe Text)
-customData field = mkParamLens ("data[" <> field <> "]")
+customDataField :: Text -> Lens' FunCaptcha (Maybe Text)
+customDataField field = mkParamLens ("data[" <> field <> "]")
