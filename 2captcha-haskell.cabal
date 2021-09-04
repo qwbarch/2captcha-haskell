@@ -30,6 +30,7 @@ library
       TwoCaptcha.Internal.Types.CoordinateCaptcha
       TwoCaptcha.Internal.Types.Exception
       TwoCaptcha.Internal.Types.FunCaptcha
+      TwoCaptcha.Internal.Types.GeeTestCaptcha
       TwoCaptcha.Internal.Types.GridCaptcha
       TwoCaptcha.Internal.Types.KeyCaptcha
       TwoCaptcha.Internal.Types.NormalCaptcha
