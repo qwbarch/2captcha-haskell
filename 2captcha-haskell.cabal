@@ -31,6 +31,7 @@ library
       TwoCaptcha.Internal.Types.Exception
       TwoCaptcha.Internal.Types.FunCaptcha
       TwoCaptcha.Internal.Types.GridCaptcha
+      TwoCaptcha.Internal.Types.KeyCaptcha
       TwoCaptcha.Internal.Types.NormalCaptcha
       TwoCaptcha.Internal.Types.ReCaptcha
       TwoCaptcha.Internal.Types.RotateCaptcha
