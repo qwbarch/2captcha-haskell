@@ -13,9 +13,11 @@ module TwoCaptcha.Captcha
     module TwoCaptcha.Internal.Types.RotateCaptcha,
     module TwoCaptcha.Internal.Types.TextCaptcha,
     module TwoCaptcha.Internal.Types.TikTokCaptcha,
+    module TwoCaptcha.Internal.Client,
   )
 where
 
+import TwoCaptcha.Internal.Client hiding (handle)
 import TwoCaptcha.Internal.Types.Captcha hiding
   ( defaultCaptcha,
     mkParamLens,
