@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.CoordinateCaptcha where
 
 import Control.Lens (Lens')
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, mkPartFileLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool)
 
 -- | Parameters used to solve a coordinate captcha.
 newtype CoordinateCaptcha = MkCoordinateCaptcha Captcha deriving (Show)
@@ -25,8 +25,8 @@ instance HasLocalImage CoordinateCaptcha
 --
 -- Optional parameters:
 --
--- * 'textInstructions'
--- * 'imgInstructions'
+-- * 'TwoCaptcha.Internal.Types.Captcha.textInstructions'
+-- * 'TwoCaptcha.Internal.Types.Captcha.imgInstructions'
 -- * 'language'
 -- * 'languageCode'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
@@ -38,14 +38,6 @@ coordinateCaptcha = MkCoordinateCaptcha defaultCaptcha
 -- | Defines that you're sending a reCAPTCHA as an image.
 reCAPTCHAImage :: Lens' CoordinateCaptcha (Maybe Bool)
 reCAPTCHAImage = mkParamLensBool "recaptcha"
-
--- | Text which is shown to the worker to help solve a captcha.
-textInstructions :: Lens' CoordinateCaptcha (Maybe Text)
-textInstructions = mkParamLens "textInstructions"
-
--- | Image file path with instructions on solving a captcha.
-imgInstructions :: Lens' CoordinateCaptcha (Maybe FilePath)
-imgInstructions = mkPartFileLens "imgInstructions"
 
 -- |
 -- The captcha's language:

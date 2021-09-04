@@ -2,7 +2,7 @@ module TwoCaptcha.Internal.Types.NormalCaptcha where
 
 import Control.Lens (Lens')
 import Data.Text (Text)
-import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool, mkPartFileLens)
+import TwoCaptcha.Internal.Types.Captcha (Captcha, HasCaptchaLenses, HasCommonCaptchaLenses, HasLocalImage, defaultCaptcha, mkParamLens, mkParamLens', mkParamLensBool)
 
 -- | Parameters used to solve a normal captcha.
 newtype NormalCaptcha = MkNormalCaptcha Captcha deriving (Show)
@@ -33,8 +33,8 @@ instance HasLocalImage NormalCaptcha
 -- * 'maxLength'
 -- * 'language'
 -- * 'languageCode'
--- * 'textInstructions'
--- * 'imgInstructions'
+-- * 'TwoCaptcha.Internal.Types.Captcha.textInstructions'
+-- * 'TwoCaptcha.Internal.Types.Captcha.imgInstructions'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
@@ -98,11 +98,3 @@ language = mkParamLens' "language"
 -- | The captcha's language code. Click <https://2captcha.com/2captcha-api#language here> for a list of supported languages.
 languageCode :: Lens' NormalCaptcha (Maybe Text)
 languageCode = mkParamLens "lang"
-
--- | Text which is shown to the worker to help solve a captcha.
-textInstructions :: Lens' NormalCaptcha (Maybe Text)
-textInstructions = mkParamLens "textInstructions"
-
--- | Image file path with instructions on solving a captcha.
-imgInstructions :: Lens' NormalCaptcha (Maybe FilePath)
-imgInstructions = mkPartFileLens "imgInstructions"

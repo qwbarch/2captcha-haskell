@@ -171,3 +171,11 @@ class Coercible Captcha a => HasLocalImage a where
   -- | Base-64 encoded image.
   body :: Lens' a (Maybe Text)
   body = mkPartTextLens "body"
+
+  -- | Text which is shown to the worker to help solve a captcha.
+  textInstructions :: Lens' a (Maybe Text)
+  textInstructions = mkParamLens "textInstructions"
+
+  -- | Image file path with instructions on solving a captcha.
+  imgInstructions :: Lens' a (Maybe FilePath)
+  imgInstructions = mkPartFileLens "imgInstructions"
