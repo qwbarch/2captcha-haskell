@@ -39,6 +39,7 @@ library
       TwoCaptcha.Internal.Types.ReCaptcha
       TwoCaptcha.Internal.Types.RotateCaptcha
       TwoCaptcha.Internal.Types.TextCaptcha
+      TwoCaptcha.Internal.Types.TikTokCaptcha
   other-modules:
       Paths_2captcha_haskell
   hs-source-dirs:
