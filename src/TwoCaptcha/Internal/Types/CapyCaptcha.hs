@@ -19,7 +19,7 @@ instance HasProxy CapyCaptcha
 -- Required parameters:
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
--- * 'captchaKey'
+-- * 'scriptDomain'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
 -- Optional parameters:
@@ -41,5 +41,5 @@ captchaKey = mkParamLens "captchakey"
 -- The domain part of the script URL found on page.
 --
 -- If not specified, defaults to: https://jp.api.capy.me/
-apiServer :: Lens' CapyCaptcha (Maybe Text)
-apiServer = mkParamLens "api_server"
+scriptDomain :: Lens' CapyCaptcha (Maybe Text)
+scriptDomain = mkParamLens "api_server"

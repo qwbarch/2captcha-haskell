@@ -87,16 +87,3 @@ minLength = mkParamLens' "min_len"
 -- | The maximum numbers of symbols in the captcha (up to 20).
 maxLength :: Lens' NormalCaptcha (Maybe Int)
 maxLength = mkParamLens' "max_len"
-
--- |
--- The captcha's language:
---
--- 0. Not specified.
--- 1. Cyrillic captcha.
--- 2. Latin captcha.
-language :: Lens' NormalCaptcha (Maybe Int)
-language = mkParamLens' "language"
-
--- | The captcha's language code. Click <https://2captcha.com/2captcha-api#language here> for a list of supported languages.
-languageCode :: Lens' NormalCaptcha (Maybe Text)
-languageCode = mkParamLens "lang"

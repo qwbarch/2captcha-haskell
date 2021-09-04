@@ -25,6 +25,7 @@ source-repository head
 
 library
   exposed-modules:
+      TwoCaptcha.Captcha
       TwoCaptcha.Internal.Client
       TwoCaptcha.Internal.Types.Captcha
       TwoCaptcha.Internal.Types.CapyCaptcha

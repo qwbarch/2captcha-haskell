@@ -20,7 +20,7 @@ instance HasLanguage CoordinateCaptcha
 --
 -- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'TwoCaptcha.Internal.Types.Captcha.method'
--- * 'reCAPTCHAImage'
+-- * 'coordinatesCaptcha'
 -- * 'TwoCaptcha.Internal.Types.Captcha.file'*
 -- * 'TwoCaptcha.Internal.Types.Captcha.body'*
 --
@@ -37,5 +37,5 @@ coordinateCaptcha :: CoordinateCaptcha
 coordinateCaptcha = MkCoordinateCaptcha defaultCaptcha
 
 -- | Defines that you're sending a reCAPTCHA as an image.
-reCAPTCHAImage :: Lens' CoordinateCaptcha (Maybe Bool)
-reCAPTCHAImage = mkParamLensBool "recaptcha"
+coordinatesCaptcha :: Lens' CoordinateCaptcha (Maybe Bool)
+coordinatesCaptcha = mkParamLensBool "coordinatescaptcha"

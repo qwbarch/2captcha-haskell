@@ -26,7 +26,7 @@ instance HasProxy HCaptcha
 --
 -- Optional parameters:
 --
--- * 'invisible'
+-- * 'hInvisible'
 -- * 'customData'
 -- * 'TwoCaptcha.Internal.Types.Captcha.userAgent'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
@@ -42,8 +42,8 @@ siteKey :: Lens' HCaptcha (Maybe Text)
 siteKey = mkParamLens "sitekey"
 
 -- | Defines if the captcha is invisible. Invisible hCaptchas are currently a rare case.
-invisible :: Lens' HCaptcha (Maybe Bool)
-invisible = mkParamLensBool "invisible"
+hInvisible :: Lens' HCaptcha (Maybe Bool)
+hInvisible = mkParamLensBool "invisible"
 
 -- |
 -- Custom data that is used in some implementations of hCaptcha, mostly with invisible captchas.
