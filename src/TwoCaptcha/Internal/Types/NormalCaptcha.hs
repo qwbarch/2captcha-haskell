@@ -1,4 +1,4 @@
-module TwoCaptcha.Internal.Types.Normal where
+module TwoCaptcha.Internal.Types.NormalCaptcha where
 
 import Control.Lens (Lens')
 import Data.Text (Text)
@@ -33,6 +33,9 @@ instance HasCaptchaLenses NormalCaptcha
 -- * 'languageCode'
 -- * 'textInstructions'
 -- * 'imgInstructions'
+-- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
+-- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
+-- * 'TwoCaptcha.Internal.Types.Captcha.softId'
 --
 -- Possible 'TwoCaptcha.Internal.Types.Captcha.method' values:
 --
