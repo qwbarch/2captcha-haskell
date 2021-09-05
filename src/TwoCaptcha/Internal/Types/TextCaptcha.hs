@@ -18,7 +18,7 @@ instance HasLanguage TextCaptcha
 --
 -- Required parameters:
 --
--- * 'TwoCaptcha.Internal.Types.Captcha.apiKey
+-- * 'TwoCaptcha.Internal.Types.Captcha.apiKey'
 -- * 'textContent'
 --
 -- Optional parameters:

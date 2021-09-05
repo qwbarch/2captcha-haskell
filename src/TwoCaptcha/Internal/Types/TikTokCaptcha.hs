@@ -28,6 +28,8 @@ instance HasCookies TikTokCaptcha
 -- * 'host'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pageUrl'
 --
+-- Optional parameters:
+--
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxy'
 -- * 'TwoCaptcha.Internal.Types.Captcha.proxyType'

@@ -27,7 +27,7 @@ instance HasProxy CapyCaptcha
 --
 -- Optional parameters:
 --
--- * 'apiServer'
+-- * 'scriptDomain'
 -- * 'TwoCaptcha.Internal.Types.Captcha.headerACAO'
 -- * 'TwoCaptcha.Internal.Types.Captcha.pingback'
 -- * 'TwoCaptcha.Internal.Types.Captcha.softId'

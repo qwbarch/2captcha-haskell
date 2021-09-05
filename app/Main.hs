@@ -10,6 +10,7 @@ import TwoCaptcha.Captcha
     HCaptcha (MkHCaptcha),
     HasCaptchaLenses (method),
     HasCommonCaptchaLenses (apiKey),
+    HasCookies (cookies),
     HasLanguage (languageCode),
     HasLocalImage (body, file, textInstructions),
     HasPageURL (pageUrl),
@@ -20,7 +21,9 @@ import TwoCaptcha.Captcha
     ReCaptchaV3 (MkReCaptchaV3),
     RotateCaptcha (MkRotateCaptcha),
     TextCaptcha (MkTextCaptcha),
+    TikTokCaptcha (MkTikTokCaptcha),
     TwoCaptchaClient (solve),
+    aid,
     apiServer,
     captchaKey,
     captchaTimeout,
@@ -32,6 +35,7 @@ import TwoCaptcha.Captcha
     gridCaptcha,
     gt,
     hCaptcha,
+    host,
     keyCaptcha,
     normalCaptcha,
     pollingInterval,
@@ -45,6 +49,7 @@ import TwoCaptcha.Captcha
     siteKey,
     textCaptcha,
     textContent,
+    tikTokCaptcha,
     userId,
     webServerSign,
     webServerSign2,
@@ -162,5 +167,16 @@ rotateExample = do
         rotateCaptcha
           & apiKey ?~ "YOUR_API_KEY"
           & file ?~ "/path/to/file"
+  session <- newAPISession
+  solve session captcha pollingInterval captchaTimeout
+
+tikTokExample = do
+  let captcha =
+        tikTokCaptcha
+          & apiKey ?~ "YOUR_API_KEY"
+          & cookies ?~ "YOUR_COOKIES"
+          & aid ?~ 0
+          & host ?~ "HOST_VALUE"
+          & pageUrl ?~ "PAGE_URL"
   session <- newAPISession
   solve session captcha pollingInterval captchaTimeout
