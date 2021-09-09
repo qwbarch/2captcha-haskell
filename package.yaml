@@ -1,16 +1,21 @@
-name:                2captcha-haskell
+name:                2captcha
 version:             0.1.0.0
 github:              "qwbarch/2captcha-haskell"
 license:             MIT 
 author:              "Edward Yang"
 maintainer:          "edwardyang0410@gmail.com"
 copyright:           "2021 Edward Yang"
+category:            Network
+synopsis: Haskell package for easy integration with the 2captcha API. 
 
+description: >
+  Haskell package for easy integration with the 2captcha API.  
+
+  Examples: https://github.com/qwbarch/2captcha-haskell/blob/main/app/Main.hs  
+  
 extra-source-files:
 - README.md
-- ChangeLog.md
-
-description: Haskell package for easy integration with the 2captcha API. 
+- CHANGELOG.md
 
 dependencies:
 - base >= 4.7 && < 5
@@ -41,14 +46,3 @@ library:
   ghc-options:
   - -Wall 
   - -Wno-name-shadowing
-
-executables:
-  2captcha-haskell-exe:
-    main:                Main.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - 2captcha-haskell

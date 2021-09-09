@@ -4,9 +4,12 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 
-name:           2captcha-haskell
+name:           2captcha
 version:        0.1.0.0
-description:    Haskell package for easy integration with the 2captcha API.
+synopsis:       Haskell package for easy integration with the 2captcha API.
+description:    Haskell package for easy integration with the 2captcha API.  
+                Examples: https://github.com/qwbarch/2captcha-haskell/blob/main/app/Main.hs  
+category:       Network
 homepage:       https://github.com/qwbarch/2captcha-haskell#readme
 bug-reports:    https://github.com/qwbarch/2captcha-haskell/issues
 author:         Edward Yang
@@ -17,7 +20,7 @@ license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
-    ChangeLog.md
+    CHANGELOG.md
 
 source-repository head
   type: git
@@ -42,7 +45,7 @@ library
       TwoCaptcha.Internal.Types.TextCaptcha
       TwoCaptcha.Internal.Types.TikTokCaptcha
   other-modules:
-      Paths_2captcha_haskell
+      Paths_2captcha
   hs-source-dirs:
       src
   default-extensions:
@@ -58,38 +61,6 @@ library
   ghc-options: -Wall -Wno-name-shadowing
   build-depends:
       aeson
-    , base >=4.7 && <5
-    , bytestring
-    , clock
-    , exceptions
-    , http-client
-    , lens
-    , lens-aeson
-    , parsec
-    , text
-    , wreq
-  default-language: Haskell2010
-
-executable 2captcha-haskell-exe
-  main-is: Main.hs
-  other-modules:
-      Paths_2captcha_haskell
-  hs-source-dirs:
-      app
-  default-extensions:
-      OverloadedStrings
-      FlexibleContexts
-      FlexibleInstances
-      UndecidableInstances
-      RankNTypes
-      ScopedTypeVariables
-      LambdaCase
-      MultiParamTypeClasses
-      TemplateHaskell
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      2captcha-haskell
-    , aeson
     , base >=4.7 && <5
     , bytestring
     , clock
