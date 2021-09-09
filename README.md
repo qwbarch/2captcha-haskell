@@ -17,6 +17,7 @@ The easiest way to integrate 2captcha into your application to automate common t
   - [Coordinate](#coordinate)
   - [Rotate](#rotate)
   - [TikTok](#tiktok)
+- [Error Handling](#error-handling)
 
 ## Solving a captcha
 
@@ -35,25 +36,25 @@ Below are the minimal required parameters to solve each type of captcha.
 This function can be used to solve a local image captcha.
 
 ```haskell
-do
-  let captcha =
-        normalCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & method ?~ "post"
-          & file ?~ "/path/to/file"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      normalCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & method ?~ "post"
+        & file ?~ "/path/to/file"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 This function can be used to solve a captcha encoded in base-64 form.
 
 ```haskell
-do
-  let captcha =
-    normalCaptcha
-      & apiKey ?~ "YOUR_API_KEY"
-      & method ?~ "base64"
-      & body ?~ "BASE_64_ENCODED_IMAGE"
+let captcha =
+  normalCaptcha
+    & apiKey ?~ "YOUR_API_KEY"
+    & method ?~ "base64"
+    & body ?~ "BASE_64_ENCODED_IMAGE"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### Text Captcha
@@ -61,13 +62,12 @@ do
 This function can be used to solve captchas in text form.
 
 ```haskell
-do
-  let captcha =
-        textCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & textContent ?~ "If tomorrow is Saturday, what day is it today?"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      textCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & textContent ?~ "If tomorrow is Saturday, what day is it today?"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### ReCAPTCHA v2
@@ -75,14 +75,13 @@ do
 ReCAPTCHA v2 requires a ``k`` or ``data-sitekey`` value found on the captcha page.
 
 ```haskell
-do
-  let captcha =
-        reCAPTCHAV2
-          & apiKey ?~ "YOUR_API_KEY"
-          & googleKey ?~ "GOOGLE_KEY_VALUE"
-          & pageUrl ?~ "PAGE_URL"
-  session <- newAPISession
-  solve session captcha pollingInterval reCAPTCHATimeout
+let captcha =
+      reCAPTCHAV2
+        & apiKey ?~ "YOUR_API_KEY"
+        & googleKey ?~ "GOOGLE_KEY_VALUE"
+        & pageUrl ?~ "PAGE_URL"
+session <- newAPISession
+solve session captcha pollingInterval reCAPTCHATimeout
 ```
 
 ### ReCaptcha v3
@@ -90,13 +89,13 @@ do
 ReCAPTCHA v3 requires a ``k`` or ``data-sitekey`` value found on the captcha page.
 
 ```haskell
-  let captcha =
-        reCAPTCHAV3
-          & apiKey ?~ "YOUR_API_KEY"
-          & googleKey ?~ "GOOGLE_KEY_VALUE"
-          & pageUrl ?~ "PAGE_URL"
-  session <- newAPISession
-  solve session captcha pollingInterval reCAPTCHATimeout
+let captcha =
+      reCAPTCHAV3
+        & apiKey ?~ "YOUR_API_KEY"
+        & googleKey ?~ "GOOGLE_KEY_VALUE"
+        & pageUrl ?~ "PAGE_URL"
+session <- newAPISession
+solve session captcha pollingInterval reCAPTCHATimeout
 ```
 
 ### FunCaptcha
@@ -104,13 +103,13 @@ ReCAPTCHA v3 requires a ``k`` or ``data-sitekey`` value found on the captcha pag
 FunCaptcha (ArkoseLabs) requires a ``pk`` or ``data-pkey`` value found on the captcha page.
 
 ```haskell
-  let captcha =
-        funCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & publicKey ?~ "PUBLIC_KEY"
-          & pageUrl ?~ "PAGE_URL"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      funCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & publicKey ?~ "PUBLIC_KEY"
+        & pageUrl ?~ "PAGE_URL"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### GeeTest
@@ -118,16 +117,15 @@ FunCaptcha (ArkoseLabs) requires a ``pk`` or ``data-pkey`` value found on the ca
 GeeTest requires the ``gt``, ``challenge``, and ``api_server`` values on the captcha page.
 
 ```haskell
-do
-  let captcha =
-        geeTestCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & gt ?~ "GT_VALUE"
-          & apiServer ?~ "API_SERVER"
-          & challenge ?~ "CAPTCHA_CHALLENGE"
-          & pageUrl ?~ "PAGE_URL"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      geeTestCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & gt ?~ "GT_VALUE"
+        & apiServer ?~ "API_SERVER"
+        & challenge ?~ "CAPTCHA_CHALLENGE"
+        & pageUrl ?~ "PAGE_URL"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### hCaptcha
@@ -135,14 +133,13 @@ do
 hCaptcha requires the ``data-sitekey`` value on the captcha page.
 
 ```haskell
-do
-  let captcha =
-        hCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & siteKey ?~ "SITE_KEY"
-          & pageUrl ?~ "PAGE_URL"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      hCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & siteKey ?~ "SITE_KEY"
+        & pageUrl ?~ "PAGE_URL"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### KeyCaptcha
@@ -150,17 +147,16 @@ do
 KeyCaptcha requires the ``s_s_c_user_id``, ``s_s_c_session_id``, ``s_s_c_web_server_sign``, and ``s_s_c_web_server_sign2`` values on the captcha page.
 
 ```haskell
-do
-  let captcha =
-        keyCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & userId ?~ "USER_ID_VALUE"
-          & sessionId ?~ "SESSION_ID_VALUE"
-          & webServerSign ?~ "WEB_SERVER_SIGN_VALUE"
-          & webServerSign2 ?~ "WEB_SERVER_SIGN_2_VALUE"
-          & pageUrl ?~ "PAGE_URL"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      keyCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & userId ?~ "USER_ID_VALUE"
+        & sessionId ?~ "SESSION_ID_VALUE"
+        & webServerSign ?~ "WEB_SERVER_SIGN_VALUE"
+        & webServerSign2 ?~ "WEB_SERVER_SIGN_2_VALUE"
+        & pageUrl ?~ "PAGE_URL"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### Capy
@@ -168,15 +164,14 @@ do
 Capy requires the ``captchakey`` value on the captcha page.
 
 ```haskell
-do
-  let captcha =
-        capyCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & captchaKey ?~ "CAPTCHA_KEY"
-          & pageUrl ?~ "PAGE_URL"
-          & scriptDomain ?~ "SCRIPT_DOMAIN"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      capyCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & captchaKey ?~ "CAPTCHA_KEY"
+        & pageUrl ?~ "PAGE_URL"
+        & scriptDomain ?~ "SCRIPT_DOMAIN"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### Grid
@@ -184,13 +179,13 @@ do
 This function can be used to solve a local grid image captcha.
 
 ```haskell
-  let captcha =
-        gridCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & method ?~ "post"
-          & file ?~ "/path/to/file"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      gridCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & method ?~ "post"
+        & file ?~ "/path/to/file"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### Coordinate
@@ -198,14 +193,13 @@ This function can be used to solve a local grid image captcha.
 This function can be used to solve a local coordinate image captcha.
 
 ```haskell
-do
-  let captcha =
-        coordinateCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & method ?~ "post"
-          & file ?~ "/path/to/file"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      coordinateCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & method ?~ "post"
+        & file ?~ "/path/to/file"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### Rotate
@@ -213,13 +207,12 @@ do
 This function can be used to solve a local rotate image captcha.
 
 ```haskell
-do
-  let captcha =
-        rotateCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & file ?~ "/path/to/file"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      rotateCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & file ?~ "/path/to/file"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
 
 ### TikTok
@@ -227,14 +220,15 @@ do
 TikTok requires the ``aid`` and ``host`` values on the captcha page.
 
 ```haskell
-tikTokExample = do
-  let captcha =
-        tikTokCaptcha
-          & apiKey ?~ "YOUR_API_KEY"
-          & cookies ?~ "YOUR_COOKIES"
-          & aid ?~ 0
-          & host ?~ "HOST_VALUE"
-          & pageUrl ?~ "PAGE_URL"
-  session <- newAPISession
-  solve session captcha pollingInterval captchaTimeout
+let captcha =
+      tikTokCaptcha
+        & apiKey ?~ "YOUR_API_KEY"
+        & cookies ?~ "YOUR_COOKIES"
+        & aid ?~ 0
+        & host ?~ "HOST_VALUE"
+        & pageUrl ?~ "PAGE_URL"
+session <- newAPISession
+solve session captcha pollingInterval captchaTimeout
 ```
+
+
