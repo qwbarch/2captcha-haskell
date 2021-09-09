@@ -8,10 +8,13 @@ copyright:           "2021 Edward Yang"
 category:            Network
 synopsis: Haskell package for easy integration with the 2captcha API. 
 
-description: >
+description: |
   Haskell package for easy integration with the 2captcha API.  
 
-  Examples: https://github.com/qwbarch/2captcha-haskell/blob/main/app/Main.hs  
+  Feature list:
+
+  * Lens-based API
+  * Uses Wreq for http calls
   
 extra-source-files:
 - README.md

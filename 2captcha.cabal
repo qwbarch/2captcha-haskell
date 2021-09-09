@@ -8,7 +8,11 @@ name:           2captcha
 version:        0.1.0.0
 synopsis:       Haskell package for easy integration with the 2captcha API.
 description:    Haskell package for easy integration with the 2captcha API.  
-                Examples: https://github.com/qwbarch/2captcha-haskell/blob/main/app/Main.hs  
+                .
+                Feature list:
+                .
+                * Lens-based API
+                * Uses Wreq for http calls
 category:       Network
 homepage:       https://github.com/qwbarch/2captcha-haskell#readme
 bug-reports:    https://github.com/qwbarch/2captcha-haskell/issues
