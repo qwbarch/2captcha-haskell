@@ -17,7 +17,6 @@ The easiest way to integrate 2captcha into your application to automate common t
   - [Coordinate](#coordinate)
   - [Rotate](#rotate)
   - [TikTok](#tiktok)
-- [Error Handling](#error-handling)
 
 ## Solving a captcha
 

@@ -51,14 +51,14 @@ class TwoCaptchaClient m where
   answer :: Session -> CaptchaRes -> m Text
 
   -- | Submits a captcha and polls for the answer.
-  solve :: (Coercible Captcha a, HasCaptchaLenses a, HasCommonCaptchaLenses a) => Session -> a -> PollingInterval -> TimeoutDuration -> m Text
+  solve :: (Coercible Captcha a, HasCaptchaLenses a, HasCommonCaptchaLenses a) => PollingInterval -> TimeoutDuration -> Session -> a -> m Text
 
 instance (MonadIO m, MonadCatch m) => TwoCaptchaClient m where
   submit session captcha' = handle $ postWith (captcha ^. options) session "https://2captcha.com/in.php" (captcha ^. parts)
     where
       captcha = coerce captcha'
   answer session (CaptchaRes captchaRes) = handle $ getWith (captchaRes ^. options) session "https://2captcha.com/res.php"
-  solve session captcha pollingInterval timeoutDuration = do
+  solve pollingInterval timeoutDuration session captcha = do
     captchaId' <- submit session captcha
     let captchaRes' =
           captchaRes
