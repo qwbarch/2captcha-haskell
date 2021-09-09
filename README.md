@@ -1,5 +1,7 @@
 # 2captcha-haskell
 
+[![Hackage](http://img.shields.io/hackage/v/2captcha.svg)](https://hackage.haskell.org/package/2captcha)
+
 The easiest way to integrate 2captcha into your application to automate common types of captchas.
 
 #### Table of Contents
