@@ -2,7 +2,7 @@
 
 [![Hackage](http://img.shields.io/hackage/v/2captcha.svg)](https://hackage.haskell.org/package/2captcha)
 
-Note: This will be deprecated by [captcha-haskell](https://github.com/qwbarch/captcha-haskell) when released.
+Note: This package is deprecated by [captcha-haskell](https://github.com/qwbarch/captcha-haskell).
 
 The easiest way to integrate 2captcha into your application to automate common types of captchas.
 
